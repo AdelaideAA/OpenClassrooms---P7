@@ -3,15 +3,13 @@
 
   <h2>Modal Example</h2>
 
-  <!-- Trigger/Open The Modal -->
-  <button id="myBtn">Open Modal</button>
-
   <!-- The Modal -->
-  <div id="myModal" class="modal">
+  <div class="modal">
     <!-- Modal content -->
     <div class="modal-content">
-      <span class="close">&times;</span>
+      <span @click="emitClose" class="close">&times;</span>
       <p>Some text in the Modal..</p>
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -19,17 +17,18 @@
 <script>
   export default {
     name: 'ModalComp',
+    emits: ['hideModal'],
+    methods: {
+      emitClose() {
+        this.$emit('hideModal');
+      },
+    },
   };
 </script>
 
 <style>
-  body {
-    font-family: Arial, Helvetica, sans-serif;
-  }
-
   /* The Modal (background) */
   .modal {
-    display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     padding-top: 100px; /* Location of the box */

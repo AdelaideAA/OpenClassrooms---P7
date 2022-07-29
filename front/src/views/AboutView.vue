@@ -2,8 +2,9 @@
   <div class="about">
     <h1>This is an about pages</h1>
   </div>
-  <div class="signup">
+  <div class="login">
     <form
+      @submit.prevent="login"
       method="post"
       aria-label="Formulaire d'inscription"
       class="form-login"
@@ -13,7 +14,7 @@
         type="email"
         id="email"
         placeholder="email@email.fr"
-        v-model="email"
+        v-model="user.email"
         class="input-login"
       />
       <label for="password">Mot de passe</label>
@@ -21,24 +22,41 @@
         type="password"
         id="password"
         placeholder="Mot de passe"
-        v-model="password"
+        v-model="user.password"
         class="input-login"
       />
-      <label for="password">Confirmer le mot de passe</label>
-      <input
-        type="password"
-        id="confirm-password"
-        placeholder="Veuillez confirmer le mot de passe"
-        v-model="confirmPassword"
-        class="input-login"
-      />
-      <button class="connexion">Se connecter</button>
+      <button class="connexion" type="submit">Se connecter</button>
+      <div>Pas encore inscrit ?</div>
+      <router-link to="/SignUp">S'inscrire </router-link>
     </form>
   </div>
 </template>
 
+<script>
+  export default {
+    name: 'about',
+    data() {
+      return {
+        user: {
+          email: '',
+          password: '',
+        },
+      };
+    },
+    methods: {
+      login() {
+        const data = {
+          email: this.user.email,
+          password: this.user.password,
+        };
+        console.log(data);
+      },
+    },
+  };
+</script>
+
 <style>
-  .signup {
+  .login {
     border-radius: 10px;
     border: 1px solid;
     background: #4e5166;
