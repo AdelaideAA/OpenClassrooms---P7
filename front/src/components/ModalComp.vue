@@ -9,10 +9,13 @@
     <div class="modal-content">
       <span @click="emitClose" class="close">&times;</span>
       <p>Some text in the Modal..</p>
-      <slot></slot>
+      <slot name='connexion'></slot>
     </div>
   </div>
 </template>
+
+
+
 
 <script>
   export default {
@@ -25,6 +28,9 @@
     },
   };
 </script>
+
+
+
 
 <style>
   /* The Modal (background) */

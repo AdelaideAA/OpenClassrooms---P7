@@ -37,10 +37,7 @@
     name: 'about',
     data() {
       return {
-        user: {
-          email: '',
-          password: '',
-        },
+        
       };
     },
     methods: {
@@ -49,7 +46,7 @@
           email: this.user.email,
           password: this.user.password,
         };
-        console.log(data);
+        console.log(this.user);
       },
     },
   };

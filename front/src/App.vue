@@ -1,35 +1,27 @@
 <template>
   <router-view /><!--Permet d'exporter homeView-->
-  <nav>
-    <div>
-      <!--Supprimer les liens home about et actu-->
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/actu">Fil d'actualités</router-link>
-    </div>
-  </nav>
   <FooterComp />
 </template>
 
 <script>
-
-import FooterComp from './components/FooterComp.vue';
+  import FooterComp from './components/FooterComp.vue';
 
   export default {
     components: {
-      FooterComp, 
+      FooterComp,
     },
   };
-  
 </script>
 
 <style>
   #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
+    font-family: 'Lato', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    color: #2c3e50;
+    --primary-color: #fd2d01;
+    --secondary-color: #ffd7d7;
+    --tertiary-color: #4e5166;
   }
 
   nav {
