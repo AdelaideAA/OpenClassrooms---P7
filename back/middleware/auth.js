@@ -13,6 +13,7 @@ module.exports = (req, res, next) => {
     req.auth = {
       userId: userId, //ajoute sa valeur à la req qui sera transmit aux routes ou middleware
     };
+
     next();
   } catch (error) {
     res.status(401).json({ error });

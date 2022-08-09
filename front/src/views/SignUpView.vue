@@ -1,6 +1,6 @@
 <template>
   <router-link to="/"><Header /></router-link>
-  <div class="signup">
+  <div class="login">
     <form
       @submit.prevent="signup"
       method="post"
@@ -55,11 +55,16 @@
           class="form-control"
         />
       </div>
-      <button class="btn btn-block" type="submit">S'inscrire</button>
+      <p>{{ errMsg }}</p>
+      <button class="btn-login" type="submit">S'inscrire</button>
     </form>
   </div>
-  <p>Déjà un compte?</p>
-  <router-link to="/login">Se connecter </router-link>
+  <div class="bloc-switch-connexion">
+    <router-link to="/login" class="switch-connexion">
+      Déjà un compte?<br />
+      Se connecter
+    </router-link>
+  </div>
 </template>
 
 <script>
@@ -77,6 +82,7 @@
           password: '',
           passwordConfirm: '',
         },
+        errMsg: null,
       };
     },
     components: {
@@ -84,21 +90,57 @@
     },
     methods: {
       async signup() {
-        const response = await axios.post('auth/signup', {
-          firstName: this.user.firstName,
-          lastName: this.user.lastName,
-          email: this.user.email,
-          password: this.user.password,
-          passwordConfirm: this.user.passwordConfirm,
-        });
-        console.log(response), this.$router.push('/login');
+        // const data = {
+        //   ...this.user
+        // }
+        /* vérifie si tous les champs sont bien remplis */
+        if (
+          !this.user.firstName ||
+          !this.user.lastName ||
+          !this.user.email ||
+          !this.user.password ||
+          !this.user.passwordConfirm
+        ) {
+          this.errMsg = 'Err! Remplissez tous les champs du formulaire';
+          return;
+        }
+        /* nos regex */
+        let regExpName = new RegExp(
+          /^[A-Za-zàáâãäåçèéêëìíîïðòóôõöùúûüýÿ\s'-]+$/
+        );
+        let regExpEmail = new RegExp(
+          /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/
+        );
+        let regExpPassword= new RegExp(/^[a-zA-Z0-9]{8,100}$/); ///((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,32})/
+        /* nos véfifications */
+        if (!regExpName.test(this.user.firstName && this.user.lastName)) {
+          this.errMsg = 'Name Err! => format nom et/ou prénom incorrect';
+          return;
+        }
+        if (!regExpEmail.test(this.user.email)) {
+          this.errMsg =
+            "Email Err! => l'email inscrit n'a pas le bon format (exemple@mail.com)";
+          return;
+        }
+        if (!regExpPassword.test(this.user.password)) {
+          this.errMsg =
+            'Password Err! => entre 8 et 100 caractères + 1 minuscule min + 1 maj min + 1 chiffre';
+          return;
+        }
+        if (this.user.password !== this.user.passwordConfirm) {
+          this.errMsg =
+            'Password Err! => Les mots de passe ne sont pas identiques';
+          return;
+        }
+        const response = await axios.post('auth/signup', this.user);
+        this.$router.push('/login');
       },
     },
   };
 </script>
 
 <style>
-  .signup {
+  .login {
     border-radius: 15px;
     background: #4e5166;
     color: white;
@@ -116,5 +158,28 @@
   .input-login {
     border-radius: 5px;
     border-color: white;
+  }
+  .btn-login {
+    width: 65%;
+    transition: all 300ms ease-in-out;
+    color: white;
+    background-color: var(--tertiary-color);
+    border: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .btn-login:hover {
+    transform: scale(1.15);
+  }
+
+  .bloc-switch-connexion {
+    margin-top: 30px;
+    margin-bottom: 40px;
+  }
+  .switch-connexion {
+    color: var(--tertiary-color);
+  }
+  .switch-connexion:hover {
+    color: var(--tertiary-color);
   }
 </style>

@@ -2,7 +2,7 @@
   <div class="bloc-color"></div>
   <Header />
   <main class="home">
-    <HelloWorld msg="Bienvenue sur votre nouveau réseau social d'entreprise!" />
+    <h1><HelloWorld msg="Bienvenue sur votre nouveau réseau social d'entreprise!" /></h1>
     <!--Mettre deux routeur link au click vers les composants pour se loguer ou s'inscrire-->
     <div class="connexion">
       <router-link to="/signup"

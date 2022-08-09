@@ -8,6 +8,9 @@ const userSchema = mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   passwordConfirm: { type: String, require: true },
+  picture: { type: String, require: false },
+  description: { type: String, require: false },
+  admin: { type: Boolean, require: true },
 });
 
 //applique uniqueValidator au schéma utilisateur

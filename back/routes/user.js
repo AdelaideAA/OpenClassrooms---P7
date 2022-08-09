@@ -10,7 +10,9 @@ const userControllers = require('../controllers/user');
 //créer les routes pour se créer/connecter un compte
 router.post('/signup', userControllers.signup);
 router.post('/login', userControllers.login);
-router.get('/logout', userControllers.logout);
+//router.get('/logout', userControllers.logout); NE SERT A RIEN
+router.post('/identify', userControllers.identifyUser);
+router.delete('/:id', userControllers.deleteUser);
 
 //créer les routes pour acceder et effectuer des actions sur son espace personnel
 // router.get('/:id', userControllers.userInfo);

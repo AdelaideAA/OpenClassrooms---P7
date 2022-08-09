@@ -16,7 +16,6 @@ require('dotenv').config();
 
 //permet de créer un user + utiliser le shéma de password et de crypter le mot de passe lors d'une inscription
 exports.signup = (req, res, next) => {
-  console.log(req.body);
   if (!Password.validate(req.body.password)) {
     // si le mot de passe n'est pas valide
     return res.status(400).json({
@@ -42,6 +41,9 @@ exports.signup = (req, res, next) => {
           lastName: req.body.lastName,
           email: req.body.email,
           password: hash, //enregistre le mot de passe haché
+          picture: '',
+          description: '',
+          admin: false,
         });
         user
           .save() //enregistre dans la base de données le nouvel utilisateur
@@ -72,7 +74,11 @@ exports.login = (req, res, next) => {
             } else {
               res.status(200).json({
                 //permet d'encoder un nouveau token avec méthode sign
-                userId: user._id,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                picture: user.picture,
+                description: user.description,
                 token: jwt.sign(
                   { userId: user._id },
                   'RANDOM_TOKEN_SECRET', //clé secrète
@@ -87,15 +93,53 @@ exports.login = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
-exports.logout = (req, res, next) => {
-  const removeToken = localStorage.removeItem('token');
-  const removeUserId = localStorage.removeItem('userId');
-  if (removeToken && removeUserId) {
-    res.status(200).json({ message: 'Déconnexion réussie !' });
-  } else {
-    res.status(401).json({ message: "Vous n'êtes pas connecté !" });
+//identifier l'utilisateur en fonction du token
+exports.identifyUser = (req, res) => {
+  if (!req.headers.authorization) {
+    res.status(403).json({
+      message: "Il n'y a pas de headers d'authentification",
+    });
+  }
+  const token = req.headers.authorization.split(' ')[1];
+  if (token) {
+    jwt.verify(token, 'RANDOM_TOKEN_SECRET', async (err, decoded) => {
+      if (err) {
+        return res.status(403).send({ message: 'Token invalid ' + err });
+      } else {
+        User.findById({ _id: decoded.userId }).then((user) => {
+          res.status(200).json({ message: user });
+        });
+      }
+    });
   }
 };
+
+exports.deleteUser = (req, res, next) => {
+  User.findOne({ _id: req.params.id })
+    .then((user) => {
+      if (user.userId != req.auth.userId) {
+        res.status(401).json({ message: 'Non-autorisé' });
+      } else {
+        const filename = user.imageUrl.split('images/')[1];
+        fs.unlink(`images/${filename}`, () => {
+          User.deleteOne({ _id: req.params.id })
+            .then(() => res.status(200).json({ message: 'Post supprimé !' }))
+            .catch((error) => res.status(401).json({ error }));
+        });
+      }
+    })
+    .catch((error) => res.status(500).json({ error }));
+};
+
+// exports.logout = (req, res, next) => {
+//   const removeToken = localStorage.removeItem('token');
+//   const removeUserId = localStorage.removeItem('userId');
+//   if (removeToken && removeUserId) {
+//     res.status(200).json({ message: 'Déconnexion réussie !' });
+//   } else {
+//     res.status(401).json({ message: "Vous n'êtes pas connecté !" });
+//   }
+// };
 
 // exports.uploadProfil = (req, res) => {
 //   if (req.file != null) {

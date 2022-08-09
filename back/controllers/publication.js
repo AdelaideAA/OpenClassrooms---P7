@@ -2,14 +2,10 @@ const Post = require('../models/Publication');
 
 const fs = require('fs');
 
-//accès à l'ensemble des sauces
-exports.getAllPost = (req, res, next) => {
-  Post.find()
-    .then((posts) => res.status(200).json(posts))
-    .catch((error) => res.status(400).json({ error }));
-};
+
 
 exports.createPost = (req, res, next) => {
+  console.log(req.body);
   const postObject = req.body;
   const date = new Date();
   const post = new Post({
@@ -33,13 +29,19 @@ exports.createPost = (req, res, next) => {
     .then(() => res.status(201).json({ message: 'Post créé !' }))
     .catch((error) => res.status(400).json({ error }));
 };
+//accès à l'ensemble des post
+exports.getAllPost = (req, res, next) => {
+  Post.find()
+    .then((posts) => res.status(200).json(posts))
+    .catch((error) => res.status(400).json({ error }));
+};
 
 //modifier un post
 exports.updatePost = (req, res, next) => {
   //vérifie s'il y un champs file
   const postObject = req.file
     ? {
-        ...JSON.parse(req.body.sauce),
+        ...JSON.parse(req.body.post),
         imageUrl: `${req.protocol}://${req.get('host')}/images/${
           req.file.filename
         }`,

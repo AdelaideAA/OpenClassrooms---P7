@@ -1,5 +1,4 @@
 <template>
-
   <router-link to="/"><Header /></router-link>
 
   <div class="login">
@@ -10,30 +9,34 @@
       class="form-login"
     >
       <div class="form-group">
-      <label for="email">Email</label>
-      <input
-        type="email"
-        id="email"
-        placeholder="email@email.fr"
-        v-model="user.email"
-        class="form-control"
-      />
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="email@email.fr"
+          v-model="user.email"
+          class="form-control"
+        />
       </div>
       <div class="form-group">
-      <label for="password">Mot de passe</label>
-      <input
-        type="password"
-        id="password"
-        placeholder="Mot de passe"
-        v-model="user.password"
-        class="form-control"
-      />
+        <label for="password">Mot de passe</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Mot de passe"
+          v-model="user.password"
+          class="form-control"
+        />
       </div>
-      <button class="btn btn-block" type="submit">Se connecter</button>
-      
+      <button class="btn-login" type="submit">Se connecter</button>
     </form>
   </div>
-      <router-link to="/signup">Pas encore inscrit ? <br> S'inscrire </router-link>
+  <div class="bloc-switch-connexion">
+    <router-link to="/signup" class="switch-connexion"
+      >Pas encore inscrit ? <br />
+      S'inscrire
+    </router-link>
+  </div>
 </template>
 
 <script>
@@ -45,10 +48,9 @@
     data() {
       return {
         user: {
-           email: '',
-        password: '',
-        }
-       
+          email: '',
+          password: '',
+        },
       };
     },
     components: {
@@ -56,33 +58,15 @@
     },
     methods: {
       async login() {
-        const response = await axios.post('auth/login',  {
-          email: this.user.email,
-          password: this.user.password,
-        });
-        //console.log(response);
+        const response = await axios.post('auth/login', this.user);
+
+        console.log(response.data);
         localStorage.setItem('token', response.data.token);
         this.$router.push('/actu');
-        
+        this.$store.commit('setUser', response.data);
       },
     },
   };
 </script>
 
-<style>
-  .login {
-    border-radius: 15px;
-    background: #4e5166;
-    color: white;
-    padding: 20px;
-    width: 375px;
-    margin: auto;
-  }
-
-  .form-login {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-</style>
+<style></style>
