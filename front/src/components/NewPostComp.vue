@@ -1,14 +1,14 @@
 <template>
   <div class="post-card">
-    <!-- 
+    <!--
       <div class="post-user-info">
         <img class="profile-picture" src="user.photo" alt="" />
         <figcaption>
           Sandra <br />
           <span class="date"> 28/07/2023 </span>
         </figcaption>
-      
-          
+     
+         
         </div> -->
     <form
       action=""
@@ -32,12 +32,14 @@
           <input
             name="file"
             type="file"
-            accept="image/png, image/jpeg"
+            accept="image/*"
             @change="uploadFile"
             class="share-picture"
+           
           />
-<!-- <div id="preview" v-if="preview">
-                <img :src="preview" :alt="preview">
+          <!--******Si j'ai le temps je met en place une preview et je change le btn de l'input*******-->
+          <!-- <div id="preview" v-if="preview">
+                <img v-if="imageUrl" :src="imageUrl">
             </div>          -->
           <!-- <div class="image-upload">
             <label for="file-input">
@@ -67,31 +69,21 @@
 
     data() {
       return {
-          post: '',
-          file: '',
-          //preview: null,
-          // errMsg: null,  
+        post: '',
+        file: '',
+        //preview: null,
+        // errMsg: null,
       };
     },
 
     methods: {
-      //       uploadFile(event) {
-      //  /* sur le onchange on va attribuer cette valeur à file (nécessaire pour l'envoi au backend) */
-      //             this.file = this.$refs.file.files[0]
-      //             let input = event.target
-      //             if(input.files) {
-      //                 let reader = new FileReader()
-      //                 reader.onload = (e) => {
-      //                     this.preview = e.target.result
-      //                 }
-      //                 reader.readAsDataURL(input.files[0])
-      //             }
-
-      //       },
+      uploadFile(event) {
+        this.file = event.target.files[0];
+      },
 
       createPost() {
         /*Il faut qu'il y est quelque chose à poster*/
-        // if (!this.formData.message && !this.formData.file) {
+        // if (!this.message && !this.file) {
         //   this.errMsg = 'Vous devez envoyer une image ou un texte!';
         //   return;
         // }
@@ -101,18 +93,27 @@
         formData.append('post', this.post);
         formData.append('file', this.file);
         formData.append('userId', this.$store.state.user._id);
-        
-        console.log(this.post);
-        console.log(this.file);
+        formData.append(
+          'userName',
+          this.$store.state.user.firstName +
+            ' ' +
+            this.$store.state.user.lastName
+        );
 
-        /* envoi du form via axios.put de l'objet formData */
+        /* envoi de l'objet formData via axios.post */
         axios
           .post('publication', formData, {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
+              Authorization: `Bearer ${localStorage.getItem('token')}`,  
             },
           })
-          .then((response) => console.log(response))
+          .then((response) => {
+            console.log(response);
+            if (response.status === 201) {
+              this.$store.commit('ajouterPost', response.data.post);
+              this.post = '';
+            }
+          })
           .catch((error) => console.log(error));
       },
     },

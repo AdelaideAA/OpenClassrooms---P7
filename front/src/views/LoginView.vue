@@ -30,6 +30,7 @@
       </div>
       <button class="btn-login" type="submit">Se connecter</button>
     </form>
+    <p>{{ errMsg }}</p>
   </div>
   <div class="bloc-switch-connexion">
     <router-link to="/signup" class="switch-connexion"
@@ -51,6 +52,7 @@
           email: '',
           password: '',
         },
+        errMsg: '',
       };
     },
     components: {
@@ -58,12 +60,25 @@
     },
     methods: {
       async login() {
-        const response = await axios.post('auth/login', this.user);
-
-        console.log(response.data);
-        localStorage.setItem('token', response.data.token);
-        this.$router.push('/actu');
-        this.$store.commit('setUser', response.data);
+        const user = {
+          ...this.user,
+        };
+        await axios
+          .post('auth/login', this.user)
+          .then((response) => {
+            if (response == 200) {
+              localStorage.setItem('token', response.data.token);
+              this.$router.push('/actu');
+              this.$store.commit('setUser', response.data);
+            } else {
+              this.errMsg = 'Email ou mot de passe incorrect';
+            }
+          })
+          .catch((error) => {
+            this.errMsg = error.response.data.message
+              ? error.response.data.message
+              : error;
+          });
       },
     },
   };
