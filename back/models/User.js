@@ -8,8 +8,12 @@ const userSchema = mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   passwordConfirm: { type: String, require: true },
-  picture: { type: String, require: false },
-  description: { type: String, require: false },
+  picture: { type: String, default: '../images/photo-avatar-profil.png' },
+  description: {
+    type: String,
+    default:
+      'Ajouter votre description',
+  },
   admin: { type: Boolean, require: true },
 });
 

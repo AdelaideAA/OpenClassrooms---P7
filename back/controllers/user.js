@@ -79,6 +79,8 @@ exports.login = (req, res, next) => {
                 lastName: user.lastName,
                 picture: user.picture,
                 description: user.description,
+                _id: user._id,
+                admin: user.admin,
                 token: jwt.sign(
                   { userId: user._id },
                   'RANDOM_TOKEN_SECRET', //clé secrète
@@ -107,28 +109,76 @@ exports.identifyUser = (req, res) => {
         return res.status(403).send({ message: 'Token invalid ' + err });
       } else {
         User.findById({ _id: decoded.userId }).then((user) => {
-          res.status(200).json({ message: user });
+          res.status(200).json({
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            picture: user.picture,
+            description: user.description,
+            _id: user._id,
+            admin: user.admin,
+          });
         });
       }
     });
   }
 };
 
-exports.deleteUser = (req, res, next) => {
+exports.updateUser = (req, res, next) => {
+  //vérifie s'il y un champs file
+  const userObject = req.file
+    ? {
+        ...JSON.parse(req.body.user),
+        picture: `${req.protocol}://${req.get('host')}/images/${
+          req.file.filename
+        }`,
+      }
+    : { ...req.body };
+
+  delete userObject._userId;
   User.findOne({ _id: req.params.id })
     .then((user) => {
       if (user.userId != req.auth.userId) {
         res.status(401).json({ message: 'Non-autorisé' });
       } else {
-        const filename = user.imageUrl.split('images/')[1];
-        fs.unlink(`images/${filename}`, () => {
-          User.deleteOne({ _id: req.params.id })
-            .then(() => res.status(200).json({ message: 'Post supprimé !' }))
-            .catch((error) => res.status(401).json({ error }));
-        });
+        User.updateOne(
+          { _id: req.params.id },
+          { ...userObject, _id: req.params.id }
+        )
+          .then(() => res.status(200).json({ message: 'User modifié !' }))
+          .catch((error) => res.status(400).json({ error }));
       }
     })
-    .catch((error) => res.status(500).json({ error }));
+    .catch((error) => {
+      res.status(400).json({ error });
+    });
+};
+
+exports.deleteUser = (req, res, next) => {
+
+  User.findOne({ _id: req.params.id })
+  try {
+    User.deleteOne({_id: req.params.id })
+        .then(() => {
+            console.log("User supprimé");
+            res.status(200);
+        })
+        .catch(error => res.status(400).json(error))
+} catch {
+    error => res.status(500).json(error);
+}
+    // .then((user) => {
+    //   if (user.userId != req.auth.userId) {
+    //     console.log(user.userId);
+    //     console.log(req.auth.userId);
+    //     res.status(401).json({ message: 'Non-autorisé' });
+    //   } else {
+    //     User.deleteOne({ _id: req.params.id })
+    //       .then(() => res.status(200).json({ message: 'User supprimé !' }))
+    //       .catch((error) => res.status(401).json({ error }));
+    //   }
+    // })
+    // .catch((error) => res.status(500).json({message: "l'erreur vient d'ici", error }));
 };
 
 // exports.logout = (req, res, next) => {

@@ -9,6 +9,7 @@ const postSchema = new mongoose.Schema(
     dislikes: { type: Number, default: 0 },
     usersLiked: { type: [String] },
     usersDisliked: { type: [String] },
+    userName: { type: String },
     // comments: {
     //   type: [
     //     {

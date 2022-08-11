@@ -2,17 +2,16 @@ const Post = require('../models/Publication');
 
 const fs = require('fs');
 
-
-
 exports.createPost = (req, res, next) => {
-  console.log(req.body);
+
   const postObject = req.body;
   const date = new Date();
   const post = new Post({
     ...postObject,
     imageUrl: `${req.protocol}://${req.get('host')}/images/${
-      req.body.imageUrl
+      req.file.filename
     }`,
+
     createdAt:
       date.getDate() +
       '/' +
@@ -26,9 +25,10 @@ exports.createPost = (req, res, next) => {
   });
   post
     .save()
-    .then(() => res.status(201).json({ message: 'Post créé !' }))
+    .then(() => res.status(201).json({ post }))
     .catch((error) => res.status(400).json({ error }));
 };
+
 //accès à l'ensemble des post
 exports.getAllPost = (req, res, next) => {
   Post.find()
