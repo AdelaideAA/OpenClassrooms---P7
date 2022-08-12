@@ -7,6 +7,7 @@
           src="../assets/business-women-avatars-smiling-f.jpg"
           alt=""
         />
+        
         <figcaption>
           {{ userName }} <br />
           <span class="date"> 28/07/2023 </span>
@@ -52,9 +53,10 @@
     props: [
       "contenu",
       "image",
-      "userName"
+      "userName",
     ],
     methods: {
+
       showAllPublications() {
         const token = localStorage.getItem('token')
         axios

@@ -61,7 +61,7 @@ exports.login = (req, res, next) => {
       if (user === null) {
         res
           .status(401)
-          .json({ message: 'identifiant/mot de passe incorrecte' });
+          .json({ message: 'Identifiant/mot de passe incorrecte' });
       } else {
         //verifie si le mot de passe correspond avec le hash de la BDD grace à la méthode compare de bcrypt
         bcrypt
@@ -70,7 +70,7 @@ exports.login = (req, res, next) => {
             if (!valid) {
               res
                 .status(401)
-                .json({ message: 'identifiant/mot de passe incorrecte' });
+                .json({ message: 'Identifiant/mot de passe incorrecte' });
             } else {
               res.status(200).json({
                 //permet d'encoder un nouveau token avec méthode sign
@@ -134,7 +134,8 @@ exports.updateUser = (req, res, next) => {
         }`,
       }
     : { ...req.body };
-
+  console.log(req.body.user);
+  console.log( req.params.id);
   delete userObject._userId;
   User.findOne({ _id: req.params.id })
     .then((user) => {
@@ -155,30 +156,29 @@ exports.updateUser = (req, res, next) => {
 };
 
 exports.deleteUser = (req, res, next) => {
-
-  User.findOne({ _id: req.params.id })
+  User.findOne({ _id: req.params.id });
   try {
-    User.deleteOne({_id: req.params.id })
-        .then(() => {
-            console.log("User supprimé");
-            res.status(200);
-        })
-        .catch(error => res.status(400).json(error))
-} catch {
-    error => res.status(500).json(error);
-}
-    // .then((user) => {
-    //   if (user.userId != req.auth.userId) {
-    //     console.log(user.userId);
-    //     console.log(req.auth.userId);
-    //     res.status(401).json({ message: 'Non-autorisé' });
-    //   } else {
-    //     User.deleteOne({ _id: req.params.id })
-    //       .then(() => res.status(200).json({ message: 'User supprimé !' }))
-    //       .catch((error) => res.status(401).json({ error }));
-    //   }
-    // })
-    // .catch((error) => res.status(500).json({message: "l'erreur vient d'ici", error }));
+    User.deleteOne({ _id: req.params.id })
+      .then(() => {
+        console.log('User supprimé');
+        res.status(200);
+      })
+      .catch((error) => res.status(400).json(error));
+  } catch {
+    (error) => res.status(500).json(error);
+  }
+  // .then((user) => {
+  //   if (user.userId != req.auth.userId) {
+  //     console.log(user.userId);
+  //     console.log(req.auth.userId);
+  //     res.status(401).json({ message: 'Non-autorisé' });
+  //   } else {
+  //     User.deleteOne({ _id: req.params.id })
+  //       .then(() => res.status(200).json({ message: 'User supprimé !' }))
+  //       .catch((error) => res.status(401).json({ error }));
+  //   }
+  // })
+  // .catch((error) => res.status(500).json({message: "l'erreur vient d'ici", error }));
 };
 
 // exports.logout = (req, res, next) => {

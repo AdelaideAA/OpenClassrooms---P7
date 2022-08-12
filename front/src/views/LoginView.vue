@@ -66,13 +66,14 @@
         await axios
           .post('auth/login', this.user)
           .then((response) => {
-            if (response == 200) {
+            if (response.status == 200) {
               localStorage.setItem('token', response.data.token);
               this.$router.push('/actu');
               this.$store.commit('setUser', response.data);
-            } else {
-              this.errMsg = 'Email ou mot de passe incorrect';
             }
+            // } else {
+            //   this.errMsg = 'Email ou mot de passe incorrect';
+            // }
           })
           .catch((error) => {
             this.errMsg = error.response.data.message

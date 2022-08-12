@@ -104,32 +104,32 @@
           this.errMsg = 'Err! Remplissez tous les champs du formulaire';
           return;
         }
-        /* nos regex */
+        /* regex */
         let regExpName = new RegExp(
           /^[A-Za-zàáâãäåçèéêëìíîïðòóôõöùúûüýÿ\s'-]+$/
         );
         let regExpEmail = new RegExp(
           /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/
         );
-        let regExpPassword= new RegExp(/^[a-zA-Z0-9]{8,100}$/); ///((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,32})/
-        /* nos véfifications */
-        if (!regExpName.test(this.user.firstName && this.user.lastName)) {
-          this.errMsg = 'Name Err! => format nom et/ou prénom incorrect';
+        let regExpPassword= new RegExp(/^(?=.{8,100}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$/); ///((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,32})/^(?=.{8,100}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$__/^[a-zA-Z0-9]{8,100}$
+        /* véfifications */
+        if (!regExpName.test(this.user.firstName || this.user.lastName)) {
+          this.errMsg = 'Format nom et/ou prénom incorrect';
           return;
         }
         if (!regExpEmail.test(this.user.email)) {
           this.errMsg =
-            "Email Err! => l'email inscrit n'a pas le bon format (exemple@mail.com)";
+            "L'email inscrit n'a pas le bon format (exemple@mail.com)";
           return;
         }
         if (!regExpPassword.test(this.user.password)) {
           this.errMsg =
-            'Password Err! => entre 8 et 100 caractères + 1 minuscule min + 1 maj min + 1 chiffre';
+            'Le mot de passe doit contenir entre 8 et 100 caractères + 1 maj + 1 chiffre';
           return;
         }
         if (this.user.password !== this.user.passwordConfirm) {
           this.errMsg =
-            'Password Err! => Les mots de passe ne sont pas identiques';
+            'Les mots de passe ne sont pas identiques';
           return;
         }
         const response = await axios.post('auth/signup', this.user);

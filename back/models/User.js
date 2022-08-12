@@ -9,11 +9,7 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true },
   passwordConfirm: { type: String, require: true },
   picture: { type: String, default: '../images/photo-avatar-profil.png' },
-  description: {
-    type: String,
-    default:
-      'Ajouter votre description',
-  },
+  description: { type: String },
   admin: { type: Boolean, require: true },
 });
 

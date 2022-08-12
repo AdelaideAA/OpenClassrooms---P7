@@ -21,7 +21,7 @@
           .post('http://localhost:3000/api/auth//identify', {}, config)
           .then((res) => {
             console.log(res.data);
-            this.$store.commit('setUser', res.data.message);
+            this.$store.commit('setUser', res.data);
           })
       } else if (!token) {
         this.$router.push('/login');
