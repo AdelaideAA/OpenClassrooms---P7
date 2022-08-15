@@ -3,25 +3,30 @@ const Post = require('../models/Publication');
 const fs = require('fs');
 
 exports.createPost = (req, res, next) => {
-
   const postObject = req.body;
   const date = new Date();
+
+  let imageUrl = null;
+
+  if (req.file) {
+    imageUrl = `${req.protocol}://${req.get('host')}/images/${
+      req.file.filename
+    }`;
+  }
   const post = new Post({
     ...postObject,
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${
-      req.file.filename
-    }`,
+    imageUrl: imageUrl,
 
-    createdAt:
-      date.getDate() +
-      '/' +
-      date.getMonth() +
-      '/' +
-      date.getFullYear() +
-      '  ' +
-      date.getHours() +
-      ':' +
-      date.getMinutes(),
+    // createdAt:
+    //   date.getDate() +
+    //   '/' +
+    //   date.getMonth() +
+    //   '/' +
+    //   date.getFullYear() +
+    //   '  ' +
+    //   date.getHours() +
+    //   ':' +
+    //   date.getMinutes(),
   });
   post
     .save()

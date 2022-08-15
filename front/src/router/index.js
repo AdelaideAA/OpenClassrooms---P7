@@ -35,6 +35,7 @@ const routes = [
     name: 'LoginView',
     component: LoginView,
   },
+  
 ];
 
 const router = createRouter({

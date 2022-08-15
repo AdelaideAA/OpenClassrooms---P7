@@ -17,6 +17,10 @@ export default createStore({
       state.posts.push(newPost)
      
     },
+    updateUser(state, updatedUser) {
+			state.user.description = updatedUser.description
+			state.user.picture = updatedUser.picture
+		},
   },
  
   actions: {},

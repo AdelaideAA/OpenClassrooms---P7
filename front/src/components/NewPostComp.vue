@@ -1,15 +1,5 @@
 <template>
-  <div class="post-card">
-    <!--
-      <div class="post-user-info">
-        <img class="profile-picture" src="user.photo" alt="" />
-        <figcaption>
-          Sandra <br />
-          <span class="date"> 28/07/2023 </span>
-        </figcaption>
-     
-         
-        </div> -->
+  <div class="card post-card mt-4">
     <form
       action=""
       @submit.prevent="createPost"
@@ -21,22 +11,27 @@
       <div>
         <textarea
           name="post"
-          id="postContent"
-          cols="50"
+          id="floatingTextarea"
           rows="2"
           placeholder="Que voulez vous partager aujourd'hui?"
-          class="share-text"
+          class="form-control text-left"
           v-model="post"
         ></textarea>
-        <div class="share">
-          <input
+        
+          <div class="mb-5">
+            <label for="formFile" class="form-label"
+              >Ajoutez une image ci dessous</label
+            >
+            <input
             name="file"
-            type="file"
             accept="image/*"
-            @change="uploadFile"
-            class="share-picture"
-           
-          />
+              class="form-control"
+              type="file"
+              aria-label="Upload"
+              @change="uploadFile"
+              id="formFile"
+            />
+          </div>
           <!--******Si j'ai le temps je met en place une preview et je change le btn de l'input*******-->
           <!-- <div id="preview" v-if="preview">
                 <img v-if="imageUrl" :src="imageUrl">
@@ -52,7 +47,7 @@
               style="display: none"
             />
           </div> -->
-        </div>
+        
         <button type="submit" class="btn-post">
           <i class="fa-solid fa-check"></i> Publier
         </button>
@@ -120,29 +115,16 @@
   };
 </script>
 
-<style>
-  .share-image {
-    font-size: 20px;
-  }
-  .post-card {
-    background-color: var(--secondary-color);
-    border-radius: 10px;
-    box-shadow: 0px 3px 10px 0px rgb(0 0 0 / 30%);
-    margin: auto;
-    padding: 20px;
-    margin: 30px 10px;
-  }
+<style scoped>
+.card{
+  margin: auto;
+  
+}
   .form-post {
     padding: 5%;
     display: flex;
     flex-direction: column;
-  }
-  .share-picture {
-    border-radius: 15px;
-    align-self: center;
-  }
-  .share-text {
-    border-radius: 15px;
+
   }
   .btn-post {
     border-radius: 15px;
@@ -156,8 +138,5 @@
     background-color: var(--primary-color);
     transform: scale(1.1);
   }
-  .share {
-    border-top: 1px solid;
-    margin-top: 8px;
-  }
+
 </style>

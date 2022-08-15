@@ -125,35 +125,33 @@ exports.identifyUser = (req, res) => {
 };
 
 exports.updateUser = (req, res, next) => {
-  //vérifie s'il y un champs file
-  const userObject = req.file
-    ? {
-        ...JSON.parse(req.body.user),
-        picture: `${req.protocol}://${req.get('host')}/images/${
-          req.file.filename
-        }`,
-      }
-    : { ...req.body };
-  console.log(req.body.user);
-  console.log( req.params.id);
-  delete userObject._userId;
-  User.findOne({ _id: req.params.id })
-    .then((user) => {
-      if (user.userId != req.auth.userId) {
-        res.status(401).json({ message: 'Non-autorisé' });
-      } else {
-        User.updateOne(
-          { _id: req.params.id },
-          { ...userObject, _id: req.params.id }
-        )
-          .then(() => res.status(200).json({ message: 'User modifié !' }))
-          .catch((error) => res.status(400).json({ error }));
-      }
-    })
-    .catch((error) => {
-      res.status(400).json({ error });
-    });
-};
+	let imageUrl = null
+
+	// vérifier si nous avons une image
+	if (req.file) {
+		imageUrl = `${req.protocol}://${req.get('host')}/images/${
+			req.file.filename
+		}`
+		User.updateOne(
+			{ _id: req.params.id },
+			{
+				$set: { picture: imageUrl, description: req.body.description },
+			}
+		)
+			.then(() => {
+				// res.status(200).json({ msg: 'done' })
+				User.findById({ _id: req.params.id }).then((user) =>
+					res
+						.status(200)
+						.json({ picture: user.picture, description: user.description })
+				)
+			})
+			.catch((err) => res.status(500).json({ msg: err }))
+	}
+	// console.log(imageUrl)
+	// console.log(req.params.id, req.file)
+	//res.status(200).json({ msg: 'no hay imagen !:!' })
+}
 
 exports.deleteUser = (req, res, next) => {
   User.findOne({ _id: req.params.id });
@@ -167,18 +165,7 @@ exports.deleteUser = (req, res, next) => {
   } catch {
     (error) => res.status(500).json(error);
   }
-  // .then((user) => {
-  //   if (user.userId != req.auth.userId) {
-  //     console.log(user.userId);
-  //     console.log(req.auth.userId);
-  //     res.status(401).json({ message: 'Non-autorisé' });
-  //   } else {
-  //     User.deleteOne({ _id: req.params.id })
-  //       .then(() => res.status(200).json({ message: 'User supprimé !' }))
-  //       .catch((error) => res.status(401).json({ error }));
-  //   }
-  // })
-  // .catch((error) => res.status(500).json({message: "l'erreur vient d'ici", error }));
+  
 };
 
 // exports.logout = (req, res, next) => {

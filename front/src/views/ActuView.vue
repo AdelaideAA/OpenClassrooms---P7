@@ -1,40 +1,38 @@
 <template>
-  <Header />
-  <div>
-    <h2>
-      Bonjour {{ this.$store.state.user.firstName }}
-      {{ this.$store.state.user.lastName }}
-    </h2>
-    <post-comp
-      v-for="post in $store.state.posts"
-      :key="post._id"
-      :contenu="post.post"
-      :image="post.imageUrl"
-      :userName="post.userName"
-    >
-    </post-comp>
- 
-    <!-- <h2 v-if="user">Bonjour, {{ user.firstName }} {{ user.lastName }}</h2>
-    <h2 v-if="!user">You are not loggin</h2> -->
-  </div>
   <main class="main">
-    <section class="section-profil"><ProfileComp /></section>
-    <section class="section-post"><NewPostComp /></section>
+    <div class="img-cont mb-5">
+      <img alt="Groupomania" src="../assets/icon-left-font.png" />
+    </div>
+    <div class="row overflow-hidden flex-row-reverse">
+      <div class="col-lg-3 mx-4">
+        <ProfileComp />
+        <NewPostComp />
+      </div>
+      <div class="col-lg-8">
+        <post-comp
+          class="card"
+          v-for="post in $store.state.posts"
+          :key="post._id"
+          :contenu="post.post"
+          :image="post.imageUrl"
+          :userName="post.userName"
+        >
+        </post-comp>
+      </div>
+    </div>
   </main>
 </template>
  
 <script>
-  import Header from '@/components/Header.vue'
   import NewPostComp from '@/components/NewPostComp.vue'
   import PostComp from '@/components/PostComp.vue'
   import ProfileComp from '@/components/ProfileComp.vue'
   import axios from 'axios'
- 
+
   export default {
     name: 'Actu',
- 
+
     components: {
-      Header,
       NewPostComp,
       PostComp,
       ProfileComp,
@@ -51,15 +49,29 @@
   };
 </script>
  
-<style>
+<style scoped>
+
 .main {
-  display: flex;
-  justify-content: space-between;
+  background-color: var(--secondary-color);
 }
-.section-profil {
-  width: 30%;
+
+.img-cont {
+  max-height: 135px;
+  background-color: white;
+  align-items: center;
+  justify-content: center;
 }
-.section-post {
-  width: 68%;
+.img-cont img {
+  padding: 0;
+  max-width: 800px;
+  display: block;
 }
+
+
+@media (max-width: 992px) { 
+  .img-cont{
+    display: none;
+  }
+ }
+
 </style>

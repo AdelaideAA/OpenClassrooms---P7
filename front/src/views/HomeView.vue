@@ -1,6 +1,6 @@
 <template>
   <div class="bloc-color"></div>
-  <Header />
+ 
   <main class="home">
     <h1><HelloWorld msg="Bienvenue sur votre nouveau réseau social d'entreprise!" /></h1>
     <!--Mettre deux routeur link au click vers les composants pour se loguer ou s'inscrire-->
@@ -23,20 +23,20 @@
 <script>
   // @ is an alias to /src
 
-  import Header from '@/components/Header.vue';
+ 
   import HelloWorld from '@/components/HelloWorld.vue';
 
   export default {
     name: 'HomeView',
 
     components: {
-      Header,
+      
       HelloWorld,
     },
   };
 </script>
 
-<style>
+<style scoped>
   .bloc-color {
     height: 35px;
     width: 100%;
