@@ -74,6 +74,7 @@
     methods: {
       uploadFile(event) {
         this.file = event.target.files[0];
+        console.log(this.file)
       },
 
       createPost() {
@@ -103,7 +104,7 @@
             },
           })
           .then((response) => {
-            console.log(response);
+            console.log( response);
             if (response.status === 201) {
               this.$store.commit('ajouterPost', response.data.post);
               this.post = '';

@@ -5,7 +5,11 @@ export default createStore({
     user: {},
     posts: [],
   },
-  getters: {},
+  getters: {
+    // getPosts(state){
+    //   return state.posts
+    // }
+  },
   mutations: {
     setUser(state, user) {
       state.user = user
@@ -21,6 +25,19 @@ export default createStore({
 			state.user.description = updatedUser.description
 			state.user.picture = updatedUser.picture
 		},
+    updatePost(state, updatePost){
+      state.posts.post = updatePost.post
+      state.posts.imageUrl = updatePost.file
+    },
+    // deletePost(state, id) {
+    //   let postFound = {};
+    //   state.posts.forEach((post) => {
+    //     if (id == post.id) {
+    //       postFound = post;
+    //     }
+    //   });
+    //   state.deletePost = postFound;
+    // }
   },
  
   actions: {},

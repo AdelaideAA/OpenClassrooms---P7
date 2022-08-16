@@ -43,29 +43,26 @@ exports.getAllPost = (req, res, next) => {
 
 //modifier un post
 exports.updatePost = (req, res, next) => {
-  //vérifie s'il y un champs file
-  const postObject = req.file
-    ? {
-        ...JSON.parse(req.body.post),
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${
-          req.file.filename
-        }`,
-      }
-    : { ...req.body };
+  const postObject = req.body;
+  let imageUrl = null;
 
-  delete postObject._userId;
-  Post.findOne({ _id: req.params.id })
-    .then((post) => {
-      if (post.userId != req.auth.userId) {
-        res.status(401).json({ message: 'Non-autorisé' });
-      } else {
-        Post.updateOne(
-          { _id: req.params.id },
-          { ...postObject, _id: req.params.id }
-        )
-          .then(() => res.status(200).json({ message: 'Post modifié !' }))
+  if (req.file) {
+    imageUrl = `${req.protocol}://${req.get('host')}/images/${
+      req.file.filename
+    }`;
+  }
+  Post.updateOne(
+    { _id: req.params.id },
+    {
+      $set: { imageUrl: imageUrl, post: req.body.post },
+    }
+    )
+    .then(() => {
+      
+        Post.findById({ _id: req.params.id })
+          .then((post) => res.status(200).json({ imageUrl: post.imageUrl, post: post.post }))
           .catch((error) => res.status(400).json({ error }));
-      }
+      
     })
     .catch((error) => {
       res.status(400).json({ error });
@@ -79,12 +76,12 @@ exports.deletePost = (req, res, next) => {
       if (post.userId != req.auth.userId) {
         res.status(401).json({ message: 'Non-autorisé' });
       } else {
-        const filename = post.imageUrl.split('images/')[1];
-        fs.unlink(`images/${filename}`, () => {
-          Post.deleteOne({ _id: req.params.id })
-            .then(() => res.status(200).json({ message: 'Post supprimé !' }))
-            .catch((error) => res.status(401).json({ error }));
-        });
+        //const filename = post.imageUrl.split('images/')[1];
+        // fs.unlink(`images/${filename}`, () => {
+        Post.deleteOne({ _id: req.params.id })
+          .then(() => res.status(200).json({ message: 'Post supprimé !' }))
+          .catch((error) => res.status(401).json({ error }));
+        //});
       }
     })
     .catch((error) => res.status(500).json({ error }));

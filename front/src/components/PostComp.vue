@@ -19,6 +19,7 @@
           type="button"
           class="btn btn-primary"
           @click="showModalPost = true"
+          
         >
           Modifier mon post
         </button>
@@ -29,7 +30,7 @@
             @fermeLeModal="showModalPost = false"
             
           >
-            <h2>Ajoutez une description et/ou une photo</h2>
+            <h2>Modifier votre publication</h2>
             <form @submit.prevent="UpdatePost" style="text-align: left">
               <div class="mb-3">
                 <div class="form-floating">
@@ -37,16 +38,17 @@
                     class="form-control text-left"
                     placeholder="ajoutez vos modifications"
                     id="floatingTextarea"
-                    
+                    v-model="post.post"
                   ></textarea>
-                  <label for="floatingTextarea">Description</label>
+                  <label for="floatingTextarea">Changez ou ajoutez un message</label>
                 </div>
               </div>
               <div class="mb-5">
                 <label for="formFile" class="form-label"
-                  >Changez votre photo ici</label
+                  >Changez ou ajoutez une image</label
                 >
                 <input
+                
                   class="form-control"
                   type="file"
                   aria-label="Upload"
@@ -55,27 +57,24 @@
                 />
               </div>
               <div class="d-flex justify-content-between">
-                <button class="btn btn-danger" @click.prevent="deletePost">
+                <button class="btn btn-danger" @click="deletePost(id)">
                   <i class="far fa-trash-alt delete me-2"></i> Supprimer ma
                   publication
                 </button>
 
                 <button
-                  @click="UpdatePost"
+                  @click="UpdatePost()"
                   type="submit"
                   class="btn btn-primary"
                 >
-                  Submit
+                  Enregistrer les modifications
                 </button>
               </div>
 
-              <p>{{ errMsg }}</p>
+              <!-- <p>{{ errMsg }}</p> -->
             </form>
           </modal-update-post-comp>
         </transition>
-        <button @click="editPost">Modifier</button>
-        <button @click="deletePost()">Supprimer</button>
-        <!-- <button id="cancel-btn">Annuler</button> -->
       </div>
     </div>
 
@@ -101,6 +100,8 @@
   </div>
 </template>
 
+
+
 <script>
   import axios from 'axios';
   import ModalUpdatePostComp from './ModalUpdatePostComp.vue';
@@ -114,11 +115,23 @@
       return {
         publications: [],
         showModalPost: false,
+        post: {
+          post:'',
+          image:'',
+        },
         
       };
     },
-    props: ['contenu', 'image', 'userName'],
+    props: [ 'id', 'contenu', 'image', 'userName'],
+
+    // computed: {
+    //   posts() {
+    //     return this.$store.getters.getPosts
+    //   }
+    // },
+    
     methods: {
+      /*Afficher l'ensemble des publications*/ 
       showAllPublications() {
         const token = localStorage.getItem('token');
         axios
@@ -135,25 +148,47 @@
             console.log(error);
           });
       },
+      /*Choisir une nouvelle image*/
       uploadFile(event) {
-        this.file = event.target.files[0];
+        this.post.image = event.target.files[0];
       },
-      UpdatePost(id) {
+
+      /* Envoyer les màj du post */
+      async UpdatePost() {
         //j'aimerais afficher un composant ou modal qui permettra de modifier (voir composant dans ModifyPostComp)
-        // let formData = new FormData();
-        // formData.append('post', this.post);
-        // formData.append('file', this.file);
-        //axios.put ('publication/' + id, formData, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
-      },
-      /* pour supprimer le post */
-      deletePost() {
         const token = localStorage.getItem('token');
-        const id = this.$store.state.posts._id;
-        console.log(id);
-        // axios.delete('publication/' + id, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
-        // .then((response) => console.log(response))
-        // .catch ((error) => console.log(error.response));
+        let formData = new FormData();
+        formData.append('post', this.post.post);
+        formData.append('file', this.post.image);
+        formData.append('id', this.id)
+        
+        await axios.put ('publication/' + this.id, formData, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
+        .then((response) => {
+          this.$store.commit("updatePost", response.data)
+          this.showModalPost = false
+          console.log(response)
+          document.location.reload();
+          })
+        .catch ((error) => console.log(error));  
+        
       },
+      /* Supprimer le post */
+      
+      deletePost(id) {
+        
+        const token = localStorage.getItem('token');
+        // //const id = this.$store.state.posts._id;
+        // for( let i=0; i < this.$store.state.posts.length; i++) {
+        //   let post = this.$store.state.posts[i]
+         axios.delete('publication/' + id, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
+        .then((response) => {
+          //console.log(response)
+          this.$router.push({ path: '/actu' })
+          this.showModalPost = false
+          })
+        .catch ((error) => console.log(error.response));  
+        }
+      
     },
   };
 </script>

@@ -140,7 +140,8 @@ exports.updateUser = (req, res, next) => {
 		)
 			.then(() => {
 				// res.status(200).json({ msg: 'done' })
-				User.findById({ _id: req.params.id }).then((user) =>
+				User.findById({ _id: req.params.id })
+        .then((user) =>
 					res
 						.status(200)
 						.json({ picture: user.picture, description: user.description })

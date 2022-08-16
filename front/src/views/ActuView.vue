@@ -13,6 +13,7 @@
           class="card"
           v-for="post in $store.state.posts"
           :key="post._id"
+          :id="post._id"
           :contenu="post.post"
           :image="post.imageUrl"
           :userName="post.userName"
@@ -44,7 +45,7 @@
         },
       })
       this.user = response.data
-      this.$store.commit("setPosts", response.data)
+      this.$store.commit("setPosts", response.data, this.id)
     },
   };
 </script>
