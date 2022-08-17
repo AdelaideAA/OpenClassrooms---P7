@@ -56,13 +56,11 @@ exports.updatePost = (req, res, next) => {
     {
       $set: { imageUrl: imageUrl, post: req.body.post },
     }
-    )
+  )
     .then(() => {
-      
-        Post.findById({ _id: req.params.id })
-          .then((post) => res.status(200).json({ imageUrl: post.imageUrl, post: post.post }))
-          .catch((error) => res.status(400).json({ error }));
-      
+      Post.findById({ _id: req.params.id })
+        .then((post) => res.status(200).json({ imageUrl, post }))
+        .catch((error) => res.status(400).json({ error }));
     })
     .catch((error) => {
       res.status(400).json({ error });

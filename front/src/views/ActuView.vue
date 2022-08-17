@@ -55,17 +55,17 @@
 .main {
   background-color: var(--secondary-color);
 }
-
 .img-cont {
-  max-height: 135px;
+  max-height: 250px;
+  width: 100%;
   background-color: white;
+  overflow: hidden;
+  display: flex;
   align-items: center;
-  justify-content: center;
 }
 .img-cont img {
-  padding: 0;
-  max-width: 800px;
-  display: block;
+  object-fit: none;
+  padding-right: 20px;
 }
 
 
