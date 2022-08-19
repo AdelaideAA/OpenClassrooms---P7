@@ -17,11 +17,11 @@ router.delete('/:id', auth, publicationCtrl.deletePost);
 router.post('/:id/like', auth, publicationCtrl.likePost);
 
 //voir un post, pas sûre d'en avoir besoin
-router.get('/:id', auth, publicationCtrl.getOnePost);
+//router.get('/:id', auth, publicationCtrl.getOnePost);
 //router.get("/:userId", auth, publicationCtrl.getAllPostsFromUser);
 
 // commenter un post
-router.post('/:id/comment', auth, multer, publicationCtrl.commentPost);
+//router.post('/:id/comment', auth, multer, publicationCtrl.commentPost);
 
 //répondre ou liker un commentaire - logique a revoir
 //router.post("/:id/:commentId/react", auth, publicationCtrl.reactToComment);
