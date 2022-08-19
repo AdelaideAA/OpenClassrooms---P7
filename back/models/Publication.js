@@ -10,6 +10,7 @@ const postSchema = new mongoose.Schema(
     usersLiked: { type: [String] },
     usersDisliked: { type: [String] },
     userName: { type: String },
+    authorImg: { type: String },
     // comments: {
     //   type: [
     //     {

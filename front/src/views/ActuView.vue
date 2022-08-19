@@ -13,10 +13,7 @@
           class="card"
           v-for="post in $store.state.posts"
           :key="post._id"
-          :id="post._id"
-          :contenu="post.post"
-          :image="post.imageUrl"
-          :userName="post.userName"
+          :post="post"
         >
         </post-comp>
       </div>
@@ -29,29 +26,32 @@
   import PostComp from '@/components/PostComp.vue'
   import ProfileComp from '@/components/ProfileComp.vue'
   import axios from 'axios'
-
+ 
   export default {
     name: 'Actu',
-
+ 
     components: {
       NewPostComp,
       PostComp,
       ProfileComp,
     },
     async created() {
-      const response = await axios.get('publication', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
-      this.user = response.data
-      this.$store.commit("setPosts", response.data, this.id)
+ 
+      if (this.$store.state.user) {
+        const response = await axios.get('publication', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        })
+        this.user = response.data
+        this.$store.commit("setPosts", response.data)
+        console.log(response.data)
+      }
     },
   };
 </script>
  
 <style scoped>
-
 .main {
   background-color: var(--secondary-color);
 }
@@ -67,12 +67,10 @@
   object-fit: none;
   padding-right: 20px;
 }
-
-
-@media (max-width: 992px) { 
-  .img-cont{
+ 
+@media (max-width: 992px) {
+  .img-cont {
     display: none;
   }
- }
-
+}
 </style>

@@ -89,6 +89,7 @@
         formData.append('post', this.post);
         formData.append('file', this.file);
         formData.append('userId', this.$store.state.user._id);
+        formData.append('authorImg', this.$store.state.user.picture);
         formData.append(
           'userName',
           this.$store.state.user.firstName +
