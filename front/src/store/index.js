@@ -18,7 +18,7 @@ export default createStore({
 			state.posts = posts
 		},
 		ajouterPost(state, newPost) {
-			state.posts.push(newPost)
+			state.posts.unshift(newPost)
 		},
 		updateUser(state, updatedUser) {
 			state.user.description = updatedUser.description

@@ -1,42 +1,48 @@
 <template>
-  <div class="card post-card mt-4">
+  <div class="card post-card mb-4 shadow-sm">
     <form
       action=""
       @submit.prevent="createPost"
-      class="form-post"
+      class="form-post p-2"
       name="myForm"
       id="myForm"
     >
-      <label for="postContent">Nouveau post</label>
-      <div>
-        <textarea
-          name="post"
-          id="floatingTextarea"
-          rows="2"
-          placeholder="Que voulez vous partager aujourd'hui?"
-          class="form-control text-left"
-          v-model="post"
-        ></textarea>
-        
-          <div class="mb-5">
-            <label for="formFile" class="form-label"
-              >Ajoutez une image ci dessous</label
-            >
-            <input
-            name="file"
-            accept="image/*"
-              class="form-control"
-              type="file"
-              aria-label="Upload"
-              @change="uploadFile"
-              id="formFile"
-            />
-          </div>
-          <!--******Si j'ai le temps je met en place une preview et je change le btn de l'input*******-->
-          <!-- <div id="preview" v-if="preview">
+      <div class="row">
+        <div class="col-2">
+          <avatar-compo></avatar-compo>
+        </div>
+        <div class="col-10">
+          <label for="postContent">Nouveau post</label>
+
+          <div>
+            <textarea
+              name="post"
+              id="floatingTextarea"
+              rows="2"
+              placeholder="Que voulez vous partager aujourd'hui?"
+              class="form-control text-left"
+              v-model="post"
+            ></textarea>
+
+            <div class="mb-5">
+              <label for="formFile" class="form-label"
+                >Ajoutez une image ci dessous</label
+              >
+              <input
+                name="file"
+                accept="image/*"
+                class="form-control"
+                type="file"
+                aria-label="Upload"
+                @change="uploadFile"
+                id="formFile"
+              />
+            </div>
+            <!--******Si j'ai le temps je met en place une preview et je change le btn de l'input*******-->
+            <!-- <div id="preview" v-if="preview">
                 <img v-if="imageUrl" :src="imageUrl">
             </div>          -->
-          <!-- <div class="image-upload">
+            <!-- <div class="image-upload">
             <label for="file-input">
               <i id="previewImg" class="fa-solid fa-image share-image"></i>
             </label>
@@ -47,11 +53,13 @@
               style="display: none"
             />
           </div> -->
-        
-        <button type="submit" class="btn-post">
-          <i class="fa-solid fa-check"></i> Publier
-        </button>
-        <!-- <p>{{ errMsg }}</p> -->
+
+            <button type="submit" class="btn-post">
+              <i class="fa-solid fa-check"></i> Publier
+            </button>
+            <!-- <p>{{ errMsg }}</p> -->
+          </div>
+        </div>
       </div>
     </form>
   </div>
@@ -59,7 +67,10 @@
 
 <script>
   import axios from 'axios';
+
+  import AvatarCompo from './AvatarCompo.vue';
   export default {
+    components: { AvatarCompo },
     name: 'NewPostComp',
 
     data() {
@@ -74,7 +85,7 @@
     methods: {
       uploadFile(event) {
         this.file = event.target.files[0];
-        console.log(this.file)
+        console.log(this.file);
       },
 
       createPost() {
@@ -101,11 +112,11 @@
         axios
           .post('publication', formData, {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,  
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
           })
           .then((response) => {
-            console.log( response);
+            console.log(response);
             if (response.status === 201) {
               this.$store.commit('ajouterPost', response.data.post);
               this.post = '';
@@ -118,15 +129,17 @@
 </script>
 
 <style scoped>
-.card{
-  margin: auto;
-  
-}
+  .card {
+    margin: auto;
+  }
+
+  .post-card {
+    border: none;
+  }
   .form-post {
     padding: 5%;
     display: flex;
     flex-direction: column;
-
   }
   .btn-post {
     border-radius: 15px;
@@ -140,5 +153,4 @@
     background-color: var(--primary-color);
     transform: scale(1.1);
   }
-
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="card container">
+  <div class="card shadow-sm container">
     <!-- Pour afficher une image par défaut passe par back ou front -->
     <!-- <div class="picture-user-container mx-auto my-4"  v-if="picture != '' ">
       <img
@@ -7,15 +7,18 @@
         src="../assets/avatar.png"
         alt="image de profil"
       />
-    </div> -->
-    <div class="picture-user-container mx-auto my-4"  v-if="picture != '' ">
-      
+    </div> 
+
+
+    <div class="picture-user-container mx-auto my-4">
       <img
         class="picture-user-profile shadow"
         :src="$store.state.user.picture"
         alt="image de profil"
       />
     </div>
+    -->
+    <avatar-comp></avatar-comp>
     <h2>Mon compte</h2>
     <span
       ><strong>
@@ -95,8 +98,9 @@
 <script>
   import axios from 'axios'
   import ModalComp from './ModalComp.vue'
+  import AvatarCompo from './AvatarCompo.vue'
   export default {
-    components: { ModalComp },
+    components: { ModalComp, AvatarCompo },
     name: 'ProfileComp',
     data() {
       return {
@@ -112,18 +116,11 @@
       this.user.description = this.$store.state.user.description
     },
     methods: {
-      /*choisir et prévisualiser une image de profil fonctionne mais est vraiment utile? Si je garde -> Css à faire*/
+      /*choisir  une image de profil */
       uploadProfilFile(event) {
         this.user.picture = event.target.files[0]
         console.log(this.user.picture)
-        // let input = event.target;
-        // if (input.files) {
-        //   let reader = new FileReader();
-        //   reader.onload = (e) => {
-        //     document.getElementById('preview').src = e.target.result;
-        //   };
-        //   reader.readAsDataURL(input.files[0]);
-        // }
+
       },
       /* Se déconnecter */
       handleClick() {
@@ -183,13 +180,8 @@
 </script>
 
 <style scoped>
-.picture-user-container {
-  width: 78px;
-}
-.picture-user-profile {
-  border-radius: 50%;
-  padding: 0;
-  height: 78px;
+.card {
+  border: none;
 }
 h2 {
   font-size: 1.2em;
@@ -212,5 +204,15 @@ h2 {
 
 .modalFade-leave-to {
   opacity: 0;
+}
+
+.picture-user-container {
+  width: 78px;
+}
+.picture-user-profile {
+  border-radius: 50%;
+  padding: 0;
+  height: 78px;
+  object-fit: cover;
 }
 </style>

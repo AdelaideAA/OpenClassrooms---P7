@@ -55,5 +55,10 @@ img {
   border-color: transparent;
   border-radius: 8px;
 }
+
+.btn-primary {
+  background-color: var(--tertiary-color) !important;
+  border-color: var(--tertiary-color) !important;
+}
 </style>
 

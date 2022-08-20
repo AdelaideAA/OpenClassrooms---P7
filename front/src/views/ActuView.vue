@@ -6,9 +6,9 @@
     <div class="row overflow-hidden flex-row-reverse">
       <div class="col-lg-3 mx-4">
         <ProfileComp />
-        <NewPostComp />
       </div>
       <div class="col-lg-8">
+        <NewPostComp />
         <post-comp
           class="card"
           v-for="post in $store.state.posts"
@@ -26,17 +26,17 @@
   import PostComp from '@/components/PostComp.vue'
   import ProfileComp from '@/components/ProfileComp.vue'
   import axios from 'axios'
- 
+
   export default {
     name: 'Actu',
- 
+
     components: {
       NewPostComp,
       PostComp,
       ProfileComp,
     },
     async created() {
- 
+
       if (this.$store.state.user) {
         const response = await axios.get('publication', {
           headers: {
@@ -67,7 +67,7 @@
   object-fit: none;
   padding-right: 20px;
 }
- 
+
 @media (max-width: 992px) {
   .img-cont {
     display: none;

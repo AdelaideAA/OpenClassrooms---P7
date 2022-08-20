@@ -1,9 +1,15 @@
 <template>
   <!--***************card de post*************-->
-  <div class="post-card">
+  <div class="post-card p-2 mb-4 shadow-sm">
     <div class="post-user">
       <div class="post-user-info">
-        <img class="profile-picture" :src="post.authorImg" alt="" />
+        <div class="picture-user-container mx-auto mt-1 ms-4">
+          <img
+            class="picture-user-profile shadow"
+            :src="post.authorImg"
+            alt="image de profil"
+          />
+        </div>
 
         <figcaption>
           {{ post.userName }} <br />
@@ -13,6 +19,7 @@
       <div class="modif">
         <!-- Button modal -->
         <button
+         v-if= "post.userId == user.userId || user.admin == true"
           type="button"
           class="btn btn-primary"
           @click="showModalPost = true"
@@ -89,10 +96,6 @@
         <i class="fa-solid fa-heart"></i
         ><span class="badge text-bg-secondary">{{ post.likes }}</span>
       </button>
-      <button type="button" class="btn btn-primary" @click="dislikeIt()">
-        <i class="fa-solid fa-thumbs-down"></i
-        ><span class="badge text-bg-secondary">{{ post.dislike }}</span>
-      </button>
     </div>
 
     <!-- <like-comp></like-comp> -->
@@ -101,8 +104,8 @@
 </template>
 
 <script>
-  import axios from 'axios';
-  import ModalUpdatePostComp from './ModalUpdatePostComp.vue';
+  import axios from 'axios'
+  import ModalUpdatePostComp from './ModalUpdatePostComp.vue'
 
   export default {
     name: 'PostComp',
@@ -110,7 +113,7 @@
       ModalUpdatePostComp,
     },
     created() {
-      this.newPost.post = this.post.post;
+      this.newPost.post = this.post.post
     },
     data() {
       return {
@@ -120,11 +123,15 @@
           post: '',
           image: '',
         },
+        user: {
+          admin: this.$store.state.user.admin,
+          userId: this.$store.state.user._id
+        },
         timestamp: '',
-      };
+      }
     },
     created() {
-      setInterval(this.getNow, 1000);
+      setInterval(this.getNow, 1000)
     },
     props: {
       post: {
@@ -136,49 +143,49 @@
 
       //afficher la date sur le post
       getNow: function () {
-        const today = new Date();
+        const today = new Date()
         const date =
           today.getDate() +
           '-' +
           (today.getMonth() + 1) +
           '-' +
-          today.getFullYear();
-        this.timestamp = date;
+          today.getFullYear()
+        this.timestamp = date
       },
       // /*Afficher l'ensemble des publications*/
-      // showAllPublications() {
-      //   const token = localStorage.getItem('token');
+      showAllPublications() {
+        const token = localStorage.getItem('token');
 
-      //   axios
-      //     .get('publication/', {
-      //       headers: {
-      //         'Content-type': 'application/json',
-      //         Authorization: `Bearer ${token}`,
-      //       },
-      //     })
-      //     .then((res) => {
-      //       this.publications.push(...res.data);
-      //       console.log("c'est res iciii", res)
-      //     })
-      //     .catch((error) => {
-      //       //console.log(error);
-      //     });
-      // },
+        axios
+          .get('publication/', {
+            headers: {
+              'Content-type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((res) => {
+            this.publications.push(...res.data);
+            console.log("c'est res iciii", res)
+          })
+          .catch((error) => {
+            //console.log(error);
+          });
+      },
 
       /*Choisir une nouvelle image*/
       uploadFile(event) {
-        this.newPost.image = event.target.files[0];
+        this.newPost.image = event.target.files[0]
       },
 
       /* Modifier et envoyer le nouveau post */
       UpdatePost() {
-        const token = localStorage.getItem('token');
-        let formData = new FormData();
-        formData.append('post', this.newPost.post);
-        formData.append('id', this.post._id);
+        const token = localStorage.getItem('token')
+        let formData = new FormData()
+        formData.append('post', this.newPost.post)
+        formData.append('id', this.post._id)
 
         if (this.newPost.image != '') {
-          formData.append('file', this.newPost.image);
+          formData.append('file', this.newPost.image)
         }
 
         axios
@@ -188,17 +195,17 @@
             },
           })
           .then((res) => {
-            console.log(res);
+            console.log(res)
             //console.log(res.data.post) null
-            this.$store.commit('updatePost', res.data.post);
-            this.showModalPost = false;
+            this.$store.commit('updatePost', res.data.post)
+            this.showModalPost = false
           })
-          .catch((error) => console.log(error));
+          .catch((error) => console.log(error))
       },
       /* Supprimer le post */
 
       deletePost() {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token')
         axios
           .delete('publication/' + this.post._id, {
             headers: {
@@ -208,25 +215,21 @@
           .then((response) => {
             //console.log(response.data)//post supprimé
             //console.log(response); //ok renvoie toute la data
-            this.$store.commit('deletePost', response.data);
-            this.showModalPost = false;
+            this.$store.commit('deletePost', response.data)
+            this.showModalPost = false
           })
-          .catch((error) => console.log(error));
+          .catch((error) => console.log(error))
       },
 
       /****************Like et dislikes*************** */
       likeIt() {
-        const userId = this.$store.state.user._id;
+        const userId = this.$store.state.user._id
         const likeData = {
           userId,
           postId: this.post._id,
           like: 1,
-        };
+        }
 
-        //console.log(data);
-        //const idParams = this.id
-
-        //route à utiliser :
         axios
           .post(`publication/${this.post._id}/like/`, likeData, {
             headers: {
@@ -235,101 +238,96 @@
           })
           .then((response) =>
             this.$store.commit('updateLikes', response.data.post)
-          );
+          )
       },
 
-      // dislikeIt() {
-      //   const userId = this.$store.state.user._id
-      //   const postId = this.id
-      //   this.dislike++
-      //   const data = {
-      //     dislike: this.dislike,
-      //     userId,
-      //     postId,
-      //   }
-
-      //   axios
-      //     .post(`publication/${postId}/like/`, data, {
-      //       headers: {
-      //         Authorization: 'Bearer ' + localStorage.getItem('token'),
-      //       },
-      //     })
-      //     .then((response) => console.log(response))
-
-      // },
+      
     },
   };
 </script>
 
 <style>
-  .post-user {
-    display: flex;
-    justify-content: space-between;
-  }
-  .post-user-info {
-    display: flex;
-  }
+.post-card {
+  border: none;
+}
+.post-user {
+  display: flex;
+  justify-content: space-between;
+}
+.post-user-info {
+  display: flex;
+}
 
-  .reacts {
-    display: flex;
-    flex-direction: column;
-  }
+.reacts {
+  display: flex;
+  flex-direction: column;
+}
 
-  .post-content {
-    margin: -10px 100px;
-  }
-  .post-content img {
-    width: 100%;
-    margin: 10px 0px;
-  }
-  figcaption {
-    min-width: fit-content;
-    margin: 5px;
-  }
+.post-content {
+  margin: -10px 100px;
+}
+.post-content img {
+  width: 100%;
+  margin: 10px 0px;
+}
+figcaption {
+  min-width: fit-content;
+  margin: 5px;
+}
 
-  .profile-picture {
-    border-radius: 50%;
-    width: 80px;
-    box-shadow: 1px 1px grey;
-    height: 80px;
-    object-fit: contain;
-    object-position: center;
-  }
-  #react {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin: 0px 100px;
-    border-top: solid 1px;
-  }
-  #react p {
-    width: 40%;
-    text-align: center;
-    padding: 15px 0px;
-    border: dashed #aaaaaa;
-    border-radius: 20px;
-    cursor: pointer;
-    border-width: 1px;
-  }
-  .date {
-    color: #b2b2b2;
-    font-size: 12px;
-  }
-  .modalFade-enter-from {
-    opacity: 0;
-  }
-  .modalFade-enter-to {
-    opacity: 1;
-  }
-  .modalFade-enter-active,
-  .modalFade-leave-active {
-    transition: all 300ms ease;
-  }
-  .modalFade-leave-from {
-    opacity: 1;
-  }
+.profile-picture {
+  border-radius: 50%;
+  width: 80px;
+  box-shadow: 1px 1px grey;
+  height: 80px;
+  object-position: center;
+  object-fit: cover;
+}
+#react {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 0px 100px;
+  border-top: solid 1px;
+}
+#react p {
+  width: 40%;
+  text-align: center;
+  padding: 15px 0px;
+  border: dashed #aaaaaa;
+  border-radius: 20px;
+  cursor: pointer;
+  border-width: 1px;
+}
+.date {
+  color: #b2b2b2;
+  font-size: 12px;
+}
+.modalFade-enter-from {
+  opacity: 0;
+}
+.modalFade-enter-to {
+  opacity: 1;
+}
+.modalFade-enter-active,
+.modalFade-leave-active {
+  transition: all 300ms ease;
+}
+.modalFade-leave-from {
+  opacity: 1;
+}
 
-  .modalFade-leave-to {
-    opacity: 0;
-  }
+.modalFade-leave-to {
+  opacity: 0;
+}
+
+.picture-user-container {
+  width: 78px;
+}
+.picture-user-profile {
+  border-radius: 50%;
+  padding: 0;
+  height: 78px;
+  object-fit: cover;
+}
 </style>
