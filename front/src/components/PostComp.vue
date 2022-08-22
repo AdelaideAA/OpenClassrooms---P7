@@ -87,7 +87,7 @@
 
     <div class="post-content">
       <p>{{ post.post }}</p>
-      <div v-if="post.imageUrl != null">
+      <div class="post-content--img" v-if="post.imageUrl != null">
         <img :src="post.imageUrl" alt="image du post" />
       </div>
     </div>
@@ -99,7 +99,7 @@
         <i class="fa-solid fa-heart"></i>
       </button>
     </div>
-    <div id="react"><p>Commenter</p></div>
+    
   </div>
 </template>
 
@@ -274,17 +274,16 @@
   transition: all 600ms ease;
 }
  
-.reacts {
-  display: flex;
-  flex-direction: column;
-}
  
 .post-content {
   margin: -10px 100px;
 }
+
 .post-content img {
+  max-height: 300px;
   width: 100%;
   margin: 10px 0px;
+  object-fit: contain;
 }
 figcaption {
   min-width: fit-content;
@@ -299,22 +298,7 @@ figcaption {
   object-position: center;
   object-fit: cover;
 }
-#react {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  margin: 0px 100px;
-  border-top: solid 1px;
-}
-#react p {
-  width: 40%;
-  text-align: center;
-  padding: 15px 0px;
-  border: dashed #aaaaaa;
-  border-radius: 20px;
-  cursor: pointer;
-  border-width: 1px;
-}
+
 .date {
   color: #b2b2b2;
   font-size: 12px;

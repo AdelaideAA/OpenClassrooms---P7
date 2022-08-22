@@ -1,22 +1,9 @@
 <template>
   <header>
-    <ul class="nav justify-content-evenly bloc-color">
-      <li class="nav-item">
-        <router-link class="nav-link" to="/login">
-          <i class="fa fa-users" aria-hidden="true"></i>
-        </router-link>
-      </li>
-      <li class="nav-item">
-        <router-link class="nav-link" to="/login">
-          <i class="fa fa-home" aria-hidden="true"></i>
-        </router-link>
-      </li>
-      <li class="nav-item">
-        <router-link class="nav-link" to="/login">
-          <i class="fa fa-sign-in" aria-hidden="true"></i>
-        </router-link>
-      </li>
-    </ul>
+    <div class="bloc-color"></div>
+    <div class="img-cont mb-5">
+      <img alt="Logo, Groupomania" src="../assets/icon-left-font.png" />
+    </div>
   </header>
 </template>
 
@@ -27,25 +14,38 @@
   min-height: 60px;
 }
 
-.nav {
+/* .nav {
   height: 60px;
   align-items: center;
 }
 .nav-link {
   color: #4e5166;
+} */
+
+.fa {
+  font-size: 1.2em;
 }
 
 .img-cont {
-  max-height: 280px;
+  max-height: 250px;
+  width: 100%;
+  background-color: white;
   overflow: hidden;
   display: flex;
   align-items: center;
 }
-img {
+.img-cont img {
+  object-fit: none;
   padding-right: 20px;
 }
 
-.fa {
-  font-size: 1.2em;
+@media (max-width: 992px) {
+  .img-cont {
+    max-height: 150px;
+  }
+  .img-cont img{
+    object-fit: cover;
+  }
+
 }
 </style>

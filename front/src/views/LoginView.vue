@@ -1,8 +1,8 @@
 <template>
   <!---- Se connecter ---->
-  <div class="img-cont">
+  <!-- <div class="img-cont">
     <img alt="Groupomania" src="../assets/icon-left-font.png" />
-  </div>
+  </div> -->
   <div class="login">
     <form
       @submit.prevent="login"

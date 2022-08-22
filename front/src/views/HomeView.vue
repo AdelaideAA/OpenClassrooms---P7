@@ -1,9 +1,9 @@
 <template>
 <!---- Page de connexion ---->
-  <div class="bloc-color"></div>
-  <div class="img-cont">
-      <img alt="Groupomania" src="../assets/icon-left-font.png" />
-    </div>
+  <!-- <div class="bloc-color"></div> -->
+  <!-- <div class="img-cont">
+      <img alt="Logo Groupomania" src="../assets/icon-left-font.png" />
+    </div> -->
  
   <main class="home">
     <h1><HelloWorld msg="Bienvenue sur votre nouveau réseau social d'entreprise!" /></h1>
@@ -44,7 +44,7 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    margin-top: 200px
+    margin-top: 150px
   }
   .connexion-btn {
     width: 250px;
@@ -57,4 +57,9 @@
     font-size: 18px;
     
   }
+ @media (max-width: 992px) {
+.connexion{
+  margin-top: 100px;
+}
+}
 </style>

@@ -1,8 +1,8 @@
 <template>
 <!---- S'inscrire ---->
-  <div class="img-cont">
+  <!-- <div class="img-cont">
       <img alt="Groupomania" src="../assets/icon-left-font.png" />
-    </div>
+    </div> -->
   <div class="login">
     <form
       @submit.prevent="signup"
@@ -190,4 +190,5 @@
   .switch-connexion:hover {
     color: var(--tertiary-color);
   }
+  
 </style>

@@ -1,9 +1,9 @@
 <template>
 <!---- fil d'actualité ---->
   <main class="main">
-    <div class="img-cont mb-5">
-      <img alt="Groupomania" src="../assets/icon-left-font.png" />
-    </div>
+     <!-- <div class="img-cont">
+      <img alt="Logo Groupomania" src="../assets/icon-left-font.png" />
+    </div> -->
     <div class="row overflow-hidden flex-row-reverse conteiner-main">
       <div class="col-lg-3 mx-4 conteiner-profil">
         <ProfileComp />
@@ -55,7 +55,12 @@
 .main {
   background-color: var(--secondary-color);
 }
-.img-cont {
+  .conteiner-main{
+    padding: 1.5rem;
+     max-width: 1300px;
+    margin: auto;
+  }
+/* .img-cont {
   max-height: 250px;
   width: 100%;
   background-color: white;
@@ -66,12 +71,16 @@
 .img-cont img {
   object-fit: none;
   padding-right: 20px;
-}
+} */
 
 @media (max-width: 992px) {
-  .img-cont {
-    display: none;
+  /* .img-cont {
+    max-height: 150px;
   }
+  .img-cont img{
+    object-fit: cover;
+  } */
+  
   .conteiner-main{
     padding: 8px;
   }
