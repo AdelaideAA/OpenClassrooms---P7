@@ -7,14 +7,14 @@ const path = require('path');
 
 const publicationRoutes = require ('./routes/publication');
 const userRoutes = require('./routes/user');
-// var helmet = require('helmet');
+// const helmet = require('helmet');
 // app.use(helmet());
-//const password = TMuvFbJfO14WVBNs //process.env.MDBUSER;
+
 
 //connexion à la BDD
 mongoose
   .connect(
-    `mongodb+srv://Adele:TMuvFbJfO14WVBNs@cluster1.j0zne24.mongodb.net/?retryWrites=true&w=majority`,
+    `mongodb+srv://${process.env.MDBUSER}@cluster1.j0zne24.mongodb.net/?retryWrites=true&w=majority`,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => console.log('Connexion à MongoDB réussie !'))

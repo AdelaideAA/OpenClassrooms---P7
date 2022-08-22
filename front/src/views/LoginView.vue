@@ -1,7 +1,8 @@
 <template>
-<div class="img-cont">
-      <img alt="Groupomania" src="../assets/icon-left-font.png" />
-    </div>
+  <!---- Se connecter ---->
+  <div class="img-cont">
+    <img alt="Groupomania" src="../assets/icon-left-font.png" />
+  </div>
   <div class="login">
     <form
       @submit.prevent="login"
@@ -42,7 +43,6 @@
 </template>
 
 <script>
-  
   import axios from 'axios';
 
   export default {
@@ -56,14 +56,12 @@
         errMsg: '',
       };
     },
-    components: {
-     
-    },
+    components: {},
     methods: {
       async login() {
-        const user = {
-          ...this.user,
-        };
+        // const user = {
+        //   ...this.user,
+        // };
         await axios
           .post('auth/login', this.user)
           .then((response) => {
@@ -72,14 +70,16 @@
               this.$router.push('/actu');
               this.$store.commit('setUser', response.data);
             }
-            // } else {
-            //   this.errMsg = 'Email ou mot de passe incorrect';
-            // }
           })
           .catch((error) => {
-            this.errMsg = error.response.data.message
-              ? error.response.data.message
-              : error;
+            if (error.response.status == 401) {
+              this.errMsg = error.response.data.message
+                ? error.response.data.message
+                : error;
+            } else {
+              this.errMsg =
+                "Nous n'avons pas accès au serveur pour le moment, merci de réssayer plus tard.";
+            }
           });
       },
     },

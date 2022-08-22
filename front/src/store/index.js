@@ -35,26 +35,19 @@ export default createStore({
 			})
 		},
 		updateLikes(state, updatedPost) {
-			console.log(updatedPost.likes)
 			state.posts.forEach((post) => {
 				if (post._id == updatedPost._id) {
 					post.likes = updatedPost.likes
+					//post.usersLiked = updatedPost.usersLiked
+					console.log('updatePost.likes', updatedPost.likes)
+					console.log('post.likes', post.likes)
 				}
 			})
-			// state.posts.post.likes = likesCoun
 		},
 		deletePost(state, post) {
 			var index = state.posts.findIndex(p => p.id == post._id);
 			state.posts.splice(index, 1);
-			
-		  //let postFound = {};
-		//   state.posts.forEach((post) => {
-		//     if (post._id == deletedPost._id) {
-		// 		post.post = deletedPost.post
-		//       //postFound = post;
-		//     }
-		 // });
-		  
+ 
 		}
 	},
 

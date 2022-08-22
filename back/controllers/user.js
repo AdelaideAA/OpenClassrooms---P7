@@ -1,13 +1,6 @@
-//Utilisation du package bcrypt
 const bcrypt = require('bcrypt');
-
-//Utilisation du package jsonwebtoken
 const jwt = require('jsonwebtoken');
-
-//Permet de récuperer le schéma user dans les models
 const User = require('../models/User');
-
-//Permet de récuperer le schéma password dans les models
 const Password = require('../models/Password');
 
 const fs = require('fs');
@@ -83,7 +76,7 @@ exports.login = (req, res, next) => {
                 admin: user.admin,
                 token: jwt.sign(
                   { userId: user._id },
-                  'RANDOM_TOKEN_SECRET', //clé secrète
+                  process.env.SECRETKEY, //clé secrète
                   { expiresIn: '24h' } //au dela de 24h le token ne sera plus valide, l'user devra se reconnecter
                 ),
               });
@@ -104,7 +97,7 @@ exports.identifyUser = (req, res) => {
   }
   const token = req.headers.authorization.split(' ')[1];
   if (token) {
-    jwt.verify(token, 'RANDOM_TOKEN_SECRET', async (err, decoded) => {
+    jwt.verify(token, process.env.SECRETKEY, async (err, decoded) => {
       if (err) {
         return res.status(403).send({ message: 'Token invalid ' + err });
       } else {
@@ -127,7 +120,7 @@ exports.identifyUser = (req, res) => {
 exports.updateUser = (req, res, next) => {
 	let imageUrl = null
 
-	// vérifier si nous avons une image
+	// vérifier qu'il y a une image a traiter
 	if (req.file) {
 		imageUrl = `${req.protocol}://${req.get('host')}/images/${
 			req.file.filename
@@ -149,9 +142,6 @@ exports.updateUser = (req, res, next) => {
 			})
 			.catch((err) => res.status(500).json({ msg: err }))
 	}
-	// console.log(imageUrl)
-	// console.log(req.params.id, req.file)
-	//res.status(200).json({ msg: 'no hay imagen !:!' })
 }
 
 exports.deleteUser = (req, res, next) => {
@@ -169,41 +159,6 @@ exports.deleteUser = (req, res, next) => {
   
 };
 
-// exports.logout = (req, res, next) => {
-//   const removeToken = localStorage.removeItem('token');
-//   const removeUserId = localStorage.removeItem('userId');
-//   if (removeToken && removeUserId) {
-//     res.status(200).json({ message: 'Déconnexion réussie !' });
-//   } else {
-//     res.status(401).json({ message: "Vous n'êtes pas connecté !" });
-//   }
-// };
-
-// exports.uploadProfil = (req, res) => {
-//   if (req.file != null) {
-//     UserModel.findOne({ _id: req.body.userId })
-//       .then((user) => {
-//         const filename = user.avatar.split('/medias/')[1];
-//         fs.unlink(`medias/${filename}`, (err) => {
-//           UserModel.findOneAndUpdate(
-//             { _id: req.body.userId },
-//             {
-//               $set: {
-//                 avatar: `${req.protocol}://${req.get('host')}/medias/${
-//                   req.file.filename
-//                 }`,
-//               },
-//             }
-//           )
-//             .then((user) => res.status(200).json({ message: 'success' }))
-//             .catch((err) =>
-//               res.satust(400).json({ error: err, message: 'error' })
-//             );
-//         });
-//       })
-//       .catch((err) => res.status(500).json(err));
-//   }
-// };
 
 // exports.updateUser = (req, res, next) => {
 //     if (req.file == null) {
@@ -213,16 +168,4 @@ exports.deleteUser = (req, res, next) => {
 //     }
 //   };
 
-//   exports.getUser = (req, res, next) => {
-//     User.findById(req.params.id)
-//       .select("-password")
-//       .then((user) => res.status(200).json(user))
-//       .catch((err) => res.status(500).json({ error: err }));
-//   };
 
-//   exports.getAllUsers = (req, res, next) => {
-//     User.find()
-//       .select("-password")
-//       .then((users) => res.status(200).json(users))
-//       .catch((err) => res.status(500).json({ error: err }));
-//   };

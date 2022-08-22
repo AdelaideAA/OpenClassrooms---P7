@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Modal -->
+    <!---- Modal Pour mettre à jour son profil ---->
     <div
       class="modal"
       tabindex="-1"

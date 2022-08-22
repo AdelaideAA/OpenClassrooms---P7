@@ -11,17 +11,6 @@ const postSchema = new mongoose.Schema(
     usersDisliked: { type: [String] },
     userName: { type: String },
     authorImg: { type: String },
-    // comments: {
-    //   type: [
-    //     {
-    //       commenterId: String,
-    //       commenterName: String,
-    //       text: String,
-    //       timestamp: Number,
-    //     },
-    //   ],
-    //   required: true,
-    // },
   },
   { timestamps: true }
 );

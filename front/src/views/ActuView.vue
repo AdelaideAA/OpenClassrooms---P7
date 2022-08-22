@@ -1,10 +1,11 @@
 <template>
+<!---- fil d'actualité ---->
   <main class="main">
     <div class="img-cont mb-5">
       <img alt="Groupomania" src="../assets/icon-left-font.png" />
     </div>
-    <div class="row overflow-hidden flex-row-reverse">
-      <div class="col-lg-3 mx-4">
+    <div class="row overflow-hidden flex-row-reverse conteiner-main">
+      <div class="col-lg-3 mx-4 conteiner-profil">
         <ProfileComp />
       </div>
       <div class="col-lg-8">
@@ -29,23 +30,22 @@
 
   export default {
     name: 'Actu',
-
+   
     components: {
       NewPostComp,
       PostComp,
       ProfileComp,
     },
     async created() {
-
+      /*Afficher l'ensemble des post */
       if (this.$store.state.user) {
         const response = await axios.get('publication', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         })
-        this.user = response.data
+        this.user = response.data 
         this.$store.commit("setPosts", response.data)
-        console.log(response.data)
       }
     },
   };
@@ -72,5 +72,13 @@
   .img-cont {
     display: none;
   }
+  .conteiner-main{
+    padding: 8px;
+  }
+  .conteiner-profil{
+    margin: 0px!important;
+  }
 }
+
+
 </style>

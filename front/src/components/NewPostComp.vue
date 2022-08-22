@@ -1,4 +1,5 @@
 <template>
+<!----Créer un nouveau post ---->
   <div class="card post-card mb-4 shadow-sm">
     <form
       action=""
@@ -12,7 +13,7 @@
           <avatar-compo></avatar-compo>
         </div>
         <div class="col-10">
-          <label for="postContent">Nouveau post</label>
+          <label class="new-post" for="postContent">Nouveau post</label>
 
           <div>
             <textarea
@@ -29,6 +30,7 @@
                 >Ajoutez une image ci dessous</label
               >
               <input
+              :key="fileInputKey"
                 name="file"
                 accept="image/*"
                 class="form-control"
@@ -53,11 +55,11 @@
               style="display: none"
             />
           </div> -->
-
+            <p class="err-msg">{{ errMsg }}</p>
             <button type="submit" class="btn-post">
               <i class="fa-solid fa-check"></i> Publier
             </button>
-            <!-- <p>{{ errMsg }}</p> -->
+            
           </div>
         </div>
       </div>
@@ -78,24 +80,24 @@
         post: '',
         file: '',
         //preview: null,
-        // errMsg: null,
+        errMsg: null,
+        fileInputKey: 0,
       };
     },
 
     methods: {
       uploadFile(event) {
         this.file = event.target.files[0];
-        console.log(this.file);
       },
 
       createPost() {
         /*Il faut qu'il y est quelque chose à poster*/
-        // if (!this.message && !this.file) {
-        //   this.errMsg = 'Vous devez envoyer une image ou un texte!';
-        //   return;
-        // }
-        /* on créé un objet formData afin de pouvoir ajouter le texte et surtout le file choisi */
+        if (!this.post && !this.file) {
+          this.errMsg = 'Vous devez publier une image ou un texte!';
+          return;
+        }
 
+        /* on créé un objet formData qui va contenir les élements à poster*/
         let formData = new FormData();
         formData.append('post', this.post);
         formData.append('file', this.file);
@@ -116,13 +118,21 @@
             },
           })
           .then((response) => {
-            console.log(response);
             if (response.status === 201) {
               this.$store.commit('ajouterPost', response.data.post);
               this.post = '';
+              this.fileInputKey++;
+              
             }
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error);
+            this.errMsg = error.response.data.message
+              ? error.response.data.message
+              : error;
+
+          })
+          
       },
     },
   };
@@ -152,5 +162,19 @@
   .btn-post:hover {
     background-color: var(--primary-color);
     transform: scale(1.1);
+  }
+  .err-msg{
+    color: var(--primary-color);
+    font-weight: 400;
+  }
+  @media(max-width: 768px){
+    .new-post{
+      margin-top: 15px;
+    margin-bottom: 20px;
+    }
+    .mb-5{
+      margin-top: 1rem;
+      margin-bottom: 2rem!important;
+    }
   }
 </style>

@@ -1,24 +1,7 @@
 <template>
+  <!---- Card profil ---->
   <div class="card shadow-sm container">
-    <!-- Pour afficher une image par défaut passe par back ou front -->
-    <!-- <div class="picture-user-container mx-auto my-4"  v-if="picture != '' ">
-      <img
-        class="picture-user-profile shadow"
-        src="../assets/avatar.png"
-        alt="image de profil"
-      />
-    </div> 
-
-
-    <div class="picture-user-container mx-auto my-4">
-      <img
-        class="picture-user-profile shadow"
-        :src="$store.state.user.picture"
-        alt="image de profil"
-      />
-    </div>
-    -->
-    <avatar-comp></avatar-comp>
+    <avatar-compo></avatar-compo>
     <h2>Mon compte</h2>
     <span
       ><strong>
@@ -29,6 +12,8 @@
     <p v-if="$store.state.user.description">
       {{ $store.state.user.description }}
     </p>
+
+    <!---- Button qui ouvre le modal pour update le profil ---->
     <button
       type="button"
       class="btn btn-primary my-2 px-5"
@@ -68,7 +53,9 @@
               id="formFile"
             />
           </div>
+
           <div class="d-flex justify-content-between">
+            <p>{{ errMsg }}</p>
             <button class="btn btn-danger" @click.prevent="deleteAccount">
               <i class="far fa-trash-alt delete me-2"></i> Supprimer mon compte
             </button>
@@ -78,15 +65,9 @@
             </button>
           </div>
 
-          <p>{{ errMsg }}</p>
+          
         </form>
-        <div>
-          <!--  
-          <div class="p-group">
-            <img id="preview" :src="user.file" alt="" class="profile" />
-          </div>
-          -->
-        </div>
+        
       </modal-comp>
     </transition>
     <button class="btn btn-outline-secondary my-2" @click="handleClick">
@@ -109,7 +90,7 @@
           description: ''
         },
         showModal: false,
-        errMsg: '',
+         errMsg: '',
       }
     },
     created() {
@@ -141,7 +122,8 @@
               },
             })
             .then(localStorage.clear()) // <- on vide le localStorage(userId et token)
-          this.$router.push({ path: '/' }).catch((error) => {
+          this.$router.push({ path: '/' })
+          .catch((error) => {
             error
           })
         }
@@ -149,8 +131,7 @@
       /*Mettre à jour son profil */
       save() {
         let formData = new FormData()
-        // on ne passe pas le file dans le body. Il arrive dans le req.file !!
-        formData.append('file', this.user.picture) // verifier dans le back-end !! (multer && variables) 
+        formData.append('file', this.user.picture)  
         formData.append('description', this.user.description)
 
 
@@ -170,6 +151,7 @@
             this.showModal = false
           })
           .catch((error) => {
+            console.log(error);
             this.errMsg = error.response.data.message
               ? error.response.data.message
               : error
@@ -182,6 +164,7 @@
 <style scoped>
 .card {
   border: none;
+  margin-bottom: 20px;
 }
 h2 {
   font-size: 1.2em;
@@ -215,4 +198,5 @@ h2 {
   height: 78px;
   object-fit: cover;
 }
+
 </style>

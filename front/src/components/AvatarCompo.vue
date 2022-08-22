@@ -9,20 +9,28 @@
 </template>
 
 <script>
-export default {
-    name: 'AvatarCompo'
-
-}
+  export default {
+    name: 'AvatarCompo',
+  };
 </script>
 
-<style>
-.picture-user-container {
-  width: 78px;
-}
-.picture-user-profile {
-  border-radius: 50%;
-  padding: 0;
-  height: 78px;
-  object-fit: cover;
-}
+<style scoped>
+  .picture-user-container {
+    width: 78px;
+    margin-top: 10px;
+  }
+  .picture-user-profile {
+    border-radius: 50%;
+    padding: 0;
+    height: 78px;
+    object-fit: cover;
+  }
+  @media (max-width: 768px) {
+    .picture-user-container {
+      width: 65px!important;
+    }
+    .picture-user-profile {
+      height: 70px;
+    }
+  }
 </style>

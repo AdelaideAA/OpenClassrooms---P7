@@ -1,5 +1,5 @@
 <template>
-  <!--***************card de post*************-->
+  <!---- Composition du post ---->
   <div class="post-card p-2 mb-4 shadow-sm">
     <div class="post-user">
       <div class="post-user-info">
@@ -17,16 +17,17 @@
         </figcaption>
       </div>
       <div class="modif">
-        <!-- Button modal -->
+        <!---- Button modal ---->
         <button
          v-if= "post.userId == user.userId || user.admin == true"
           type="button"
           class="btn btn-primary"
           @click="showModalPost = true"
         >
-          Modifier mon post
+          <i class="fa-solid fa-pencil"></i>
+
         </button>
-        <!--***********Modal pour editer le post***************-->
+        <!---- Modal pour editer le post ---->
         <transition name="modalFade">
           <modal-update-post-comp
             v-if="showModalPost"
@@ -68,6 +69,7 @@
                 </button>
 
                 <button
+                
                   @click="UpdatePost"
                   type="submit"
                   class="btn btn-primary"
@@ -76,7 +78,7 @@
                 </button>
               </div>
 
-              <!-- <p>{{ errMsg }}</p> -->
+              <p>{{ errMsg }}</p>
             </form>
           </modal-update-post-comp>
         </transition>
@@ -89,16 +91,14 @@
         <img :src="post.imageUrl" alt="image du post" />
       </div>
     </div>
-    <!--*********Partie Like et dislike***************-->
+    <!---- Partie Like ---->
 
     <div class="like">
-      <button type="button" class="btn btn-primary" @click="likeIt()">
-        <i class="fa-solid fa-heart"></i
-        ><span class="badge text-bg-secondary">{{ post.likes }}</span>
+      <button type="button" class="btn like-btn" @click="likeIt()">
+        <span class="badge">{{ post.likes }}</span>
+        <i class="fa-solid fa-heart"></i>
       </button>
     </div>
-
-    <!-- <like-comp></like-comp> -->
     <div id="react"><p>Commenter</p></div>
   </div>
 </template>
@@ -112,9 +112,9 @@
     components: {
       ModalUpdatePostComp,
     },
-    created() {
-      this.newPost.post = this.post.post
-    },
+    // created() {
+    //   this.newPost.post = this.post.post
+    // },
     data() {
       return {
         publications: [],
@@ -128,6 +128,7 @@
           userId: this.$store.state.user._id
         },
         timestamp: '',
+        errMsg:'',
       }
     },
     created() {
@@ -153,24 +154,24 @@
         this.timestamp = date
       },
       // /*Afficher l'ensemble des publications*/
-      showAllPublications() {
-        const token = localStorage.getItem('token');
+      // showAllPublications() {
+      //   const token = localStorage.getItem('token');
 
-        axios
-          .get('publication/', {
-            headers: {
-              'Content-type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          .then((res) => {
-            this.publications.push(...res.data);
-            console.log("c'est res iciii", res)
-          })
-          .catch((error) => {
-            //console.log(error);
-          });
-      },
+      //   axios
+      //     .get('publication/', {
+      //       headers: {
+      //         'Content-type': 'application/json',
+      //         Authorization: `Bearer ${token}`,
+      //       },
+      //     })
+      //     .then((res) => {
+      //       this.publications.push(...res.data);
+      //       console.log("c'est res iciii", res)
+      //     })
+      //     .catch((error) => {
+      //       //console.log(error);
+      //     });
+      // },
 
       /*Choisir une nouvelle image*/
       uploadFile(event) {
@@ -187,20 +188,23 @@
         if (this.newPost.image != '') {
           formData.append('file', this.newPost.image)
         }
+        let id = this.post._id
 
         axios
-          .put('publication/' + this.post._id, formData, {
+          .put(`publication/${id}`, formData, {
             headers: {
               Authorization: 'Bearer ' + localStorage.getItem('token'),
             },
           })
           .then((res) => {
             console.log(res)
-            //console.log(res.data.post) null
             this.$store.commit('updatePost', res.data.post)
             this.showModalPost = false
           })
-          .catch((error) => console.log(error))
+          .catch((error) => {
+            console.log( error)
+            this.errMsg='Vous ne pouvez pas modifier votre publication pour le moment, veuillez réessayer plus tard.'
+          })
       },
       /* Supprimer le post */
 
@@ -213,12 +217,14 @@
             },
           })
           .then((response) => {
-            //console.log(response.data)//post supprimé
-            //console.log(response); //ok renvoie toute la data
+            console.log('response du delete', response.data)
             this.$store.commit('deletePost', response.data)
             this.showModalPost = false
           })
-          .catch((error) => console.log(error))
+          .catch((error) =>{
+            console.log(error)
+            this.errMsg='Vous ne pouvez pas supprimer votre publication pour le moment, veuillez réessayer plus tard.'
+          } )
       },
 
       /****************Like et dislikes*************** */
@@ -229,16 +235,20 @@
           postId: this.post._id,
           like: 1,
         }
+       
 
         axios
           .post(`publication/${this.post._id}/like/`, likeData, {
             headers: {
               Authorization: 'Bearer ' + localStorage.getItem('token'),
             },
+            
           })
-          .then((response) =>
+          .then((response) => {
+            console.log('response', response.data.post)
             this.$store.commit('updateLikes', response.data.post)
-          )
+          })
+          .catch((error) => console.log( error))
       },
 
       
@@ -257,12 +267,18 @@
 .post-user-info {
   display: flex;
 }
-
+ 
+.fa-heart {
+  color: #dd0303;
+  font-size: 1.7em;
+  transition: all 600ms ease;
+}
+ 
 .reacts {
   display: flex;
   flex-direction: column;
 }
-
+ 
 .post-content {
   margin: -10px 100px;
 }
@@ -274,7 +290,7 @@ figcaption {
   min-width: fit-content;
   margin: 5px;
 }
-
+ 
 .profile-picture {
   border-radius: 50%;
   width: 80px;
@@ -316,11 +332,11 @@ figcaption {
 .modalFade-leave-from {
   opacity: 1;
 }
-
+ 
 .modalFade-leave-to {
   opacity: 0;
 }
-
+ 
 .picture-user-container {
   width: 78px;
 }
@@ -330,4 +346,39 @@ figcaption {
   height: 78px;
   object-fit: cover;
 }
+ 
+.badge {
+  color: var(--tertiary-color);
+}
+.like {
+  margin: 0px 100px;
+  display: flex;
+  justify-content: flex-end;
+}
+.like-btn {
+  display: flex;
+  align-items: center;
+}
+.like .like-btn:hover,
+.like .like-btn:focus,
+.like .like-btn:active {
+  background-color: white;
+  border-color: white;
+}
+ 
+.like .like-btn:hover .fa-heart {
+  transform: scale(1.2);
+}
+.fa-pencil{
+  font-size: 1.2em;
+}
+  @media (max-width: 768px) {
+    .picture-user-container {
+      width: 65px!important;
+    }
+    .picture-user-profile {
+      height: 70px;
+    }
+  }
+
 </style>

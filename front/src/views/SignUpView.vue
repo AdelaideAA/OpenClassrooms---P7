@@ -1,4 +1,5 @@
 <template>
+<!---- S'inscrire ---->
   <div class="img-cont">
       <img alt="Groupomania" src="../assets/icon-left-font.png" />
     </div>
@@ -92,9 +93,6 @@
     },
     methods: {
       async signup() {
-        // const data = {
-        //   ...this.user
-        // }
         /* vérifie si tous les champs sont bien remplis */
         if (
           !this.user.firstName ||
@@ -134,8 +132,16 @@
             'Les mots de passe ne sont pas identiques';
           return;
         }
-        const response = await axios.post('auth/signup', this.user);
-        this.$router.push('/login');
+        /*Se connecter*/ 
+        const response = await axios.post('auth/signup', this.user)
+        .then((response) => {
+          this.$router.push('/login');
+        }) 
+        .catch((error) => {
+          console.log(error);
+          this.errMsg="Nous n'avons pas accès au serveur pour le moment, merci de réssayer plus tard."
+        })
+        
       },
     },
   };

@@ -6,19 +6,13 @@ const multer = require('../middleware/multer-config');
 //associe controllers et routes
 const userControllers = require('../controllers/user');
 // récupère la fonction pour limiter les essais de mot de passe
-//const limiter = require('../middleware/limiter')***voir pour ajouter étape "limiter" dans route login
+const limiter = require('../middleware/limiter')
 
 //créer les routes pour se créer/connecter un compte
 router.post('/signup', userControllers.signup);
-router.post('/login', userControllers.login);
-//router.get('/logout', userControllers.logout); NE SERT A RIEN
+router.post('/login', limiter, userControllers.login);
 router.post('/identify', userControllers.identifyUser);
 router.put('/:id', multer, userControllers.updateUser);
 router.delete('/:id', userControllers.deleteUser);
-
-//créer les routes pour acceder et effectuer des actions sur son espace personnel
-// router.get('/:id', userControllers.userInfo);
-
-// router.delete('/:id', userControllers.deleteUser);
 
 module.exports = router;
