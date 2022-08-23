@@ -208,6 +208,7 @@ h2 {
   border-radius: 50%;
   padding: 0;
   height: 78px;
+  width: 78px;
   object-fit: cover;
 }
 .err-msg{

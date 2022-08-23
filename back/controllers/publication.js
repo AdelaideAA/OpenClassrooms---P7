@@ -30,9 +30,6 @@ exports.getAllPost = (req, res, next) => {
     .sort({ createdAt: -1 })
     .then((posts) => {
       posts.forEach((post) => {
-        // CHECK THIS !!!
-        // console.log(post)
-        // post.post = ' ahora siii !!!! '
         User.findOne({ _id: post.userId }).then((user) => {
           console.log(post.post);
         });
@@ -167,14 +164,16 @@ exports.likePost = (req, res, next) => {
       let toChange = {
         $inc: { likes: +1 },
         $push: { usersLiked: req.body.userId },
-      };
+      }
 
       Post.updateOne({ _id: req.params.id }, toChange)
 
         .then(() => {
-          res.status(200).json({ message: 'Liked!', post });
+          Post.findOne({ _id: req.params.id }).then((updatedPost) =>
+            res.status(200).json({ message: 'Liked!', updatedPost })
+          )
         })
-        .catch((error) => res.status(400).json({ error }));
+        .catch((error) => res.status(400).json({ error }))
     } else if (post.usersLiked.includes(req.body.userId)) {
       Post.updateOne(
         { _id: req.params.id },
@@ -182,74 +181,15 @@ exports.likePost = (req, res, next) => {
         { $pull: { usersLiked: req.body.userId }, $inc: { likes: -1 } }
       )
         .then(() => {
-          res.status(200).json({ message: 'Post unliked', post });
+          Post.findOne({ _id: req.params.id }).then((updatedPost) =>
+            res.status(200).json({ message: 'Post unliked', updatedPost })
+          )
+          // res.status(200).json({ message: 'Post unliked', post })
         })
-        .catch((error) => res.status(400).json({ error }));
+        .catch((error) => res.status(400).json({ error }))
     }
-  });
-};
+  })
+}
 
-//Liker & disliker un post METHODE MARTIN
-// exports.likePost = (req, res, next) => {
-//   if (req.body.like == 1) {
-//     Like.findOne({ userId: req.body.userId }, { postId: req.body.postId })
-//       .then((post) => {
-//         if (post) {
-//           console.log('dislike');
-//           Like.findOne(
-//             { postId: req.body.postId },
-//             { userId: req.body.userId }
-//           ).then((like) => {
-//             console.log(like);
-//             Like.deleteOne({ userId: req.body.userId }).then(() =>
-//               console.log('deleted ...')
-//             );
-//             // combien de likes il'y a dans cet post
-//             Like.find({ postId: req.body.postId }).then((result) => {
-//               console.log(result.length);
-//               const likeCount = result.length;
-//               Post.updateOne(
-//                 { _id: req.body.postId },
-//                 {
-//                   $set: { likes: likeCount },
-//                 }
-//               ).then(() =>
-//                 Post.findOne({ _id: req.body.postId }).then((post) => {
-//                   console.log(post);
-//                   res.status(200).json({ post });
-//                 })
-//               );
-//             });
-//           });
-//         } else {
-//           console.log('like');
-//           const like = new Like({
-//             userId: req.body.userId,
-//             postId: req.body.postId,
-//           });
-//           like.save().then(() => {
-//             // combien de likes il'y a dans cet post
-//             Like.find({ postId: req.body.postId }).then((result) => {
-//               const likeCount = result.length;
-//               console.log(likeCount);
-//               Post.updateOne(
-//                 { _id: req.body.postId },
-//                 {
-//                   $set: { likes: likeCount },
-//                 }
-//               ).then(() =>
-//                 Post.findOne({ _id: req.body.postId }).then((post) => {
-//                   console.log(post);
-//                   res.status(200).json({ post });
-//                 })
-//               );
-//             });
-//           });
-//         }
-//       })
-//       .catch((err) => console.log(err));
-//   }
-// };
-//};
 
 

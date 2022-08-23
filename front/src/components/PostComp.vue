@@ -240,7 +240,7 @@
           })
           .then((response) => {
             console.log('response', response.data.post)
-            this.$store.commit('updateLikes', response.data.post)
+            this.$store.commit('updateLikes', response.data.updatedPost)
           })
           .catch((error) => console.log( error))
       },
@@ -322,6 +322,7 @@ figcaption {
   border-radius: 50%;
   padding: 0;
   height: 78px;
+    width: 78px;
   object-fit: cover;
 }
  

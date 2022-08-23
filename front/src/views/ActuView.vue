@@ -7,7 +7,7 @@
       </section>
       <section class="col-lg-8">
          <h1 class="first-post">{{firstPost}}</h1>
-        <NewPostComp />
+        <NewPostComp @postCree="this.firstPost= false" />
         <post-comp
           class="card"
           v-for="post in $store.state.posts"
@@ -30,7 +30,7 @@
     name: 'Actu',
     data() {
       return {
-        firstPost:'',
+        firstPost:false,
       } 
     },
    
@@ -50,7 +50,9 @@
         this.user = response.data 
         this.$store.commit("setPosts", response.data)
          if(response.data.length === 0){
-          this.firstPost="Soyez le premier à partager quelque chose!"
+          this.firstPost=true
+        }else{
+          this.firstPost=false
         }
       }
     },

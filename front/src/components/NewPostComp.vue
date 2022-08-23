@@ -109,7 +109,7 @@
               this.$store.commit('ajouterPost', response.data.post);
               this.post = '';
               this.fileInputKey++;
-              
+              this.$emit("postCree", true)
             }
           })
           .catch((error) => {
