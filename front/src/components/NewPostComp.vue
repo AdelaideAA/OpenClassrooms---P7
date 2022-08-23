@@ -40,21 +40,6 @@
                 id="formFile"
               />
             </div>
-            <!--******Si j'ai le temps je met en place une preview et je change le btn de l'input*******-->
-            <!-- <div id="preview" v-if="preview">
-                <img v-if="imageUrl" :src="imageUrl">
-            </div>          -->
-            <!-- <div class="image-upload">
-            <label for="file-input">
-              <i id="previewImg" class="fa-solid fa-image share-image"></i>
-            </label>
-            <input
-              id="file-input"
-              type="file"
-              onchange="previewFile(this);"
-              style="display: none"
-            />
-          </div> -->
             <p class="err-msg">{{ errMsg }}</p>
             <button type="submit" class="btn-post">
               <i class="fa-solid fa-check"></i> Publier
@@ -79,7 +64,6 @@
       return {
         post: '',
         file: '',
-        //preview: null,
         errMsg: null,
         fileInputKey: 0,
       };

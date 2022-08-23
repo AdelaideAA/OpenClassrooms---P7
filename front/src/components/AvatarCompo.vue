@@ -1,9 +1,16 @@
 <template>
   <div class="picture-user-container mx-auto">
-    <img
+   <img
       class="picture-user-profile shadow"
+      v-if="$store.state.user.picture"
       :src="$store.state.user.picture"
       alt="image de profil"
+    />
+    <img
+      v-else
+      src="../assets/avatar.png"
+      alt="image de profil par défaut"
+      class="picture-user-profile shadow"
     />
   </div>
 </template>

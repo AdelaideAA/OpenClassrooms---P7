@@ -6,10 +6,17 @@
         <div class="picture-user-container mx-auto mt-1 ms-4">
           <img
             class="picture-user-profile shadow"
+            v-if="post.authorImg"
             :src="post.authorImg"
             alt="image de profil"
           />
-        </div>
+          <img
+      v-else
+      src="../assets/avatar.png"
+      alt="image de profil par défaut"
+      class="picture-user-profile shadow"
+    />
+    </div>
 
         <figcaption>
           {{ post.userName }} <br />

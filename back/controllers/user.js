@@ -118,6 +118,7 @@ exports.identifyUser = (req, res) => {
 };
 
 exports.updateUser = (req, res, next) => {
+  
 	let imageUrl = null
 
 	// vérifier qu'il y a une image a traiter
@@ -125,14 +126,15 @@ exports.updateUser = (req, res, next) => {
 		imageUrl = `${req.protocol}://${req.get('host')}/images/${
 			req.file.filename
 		}`
+  }
 		User.updateOne(
 			{ _id: req.params.id },
 			{
 				$set: { picture: imageUrl, description: req.body.description },
 			}
 		)
+    
 			.then(() => {
-				// res.status(200).json({ msg: 'done' })
 				User.findById({ _id: req.params.id })
         .then((user) =>
 					res
@@ -141,7 +143,6 @@ exports.updateUser = (req, res, next) => {
 				)
 			})
 			.catch((err) => res.status(500).json({ msg: err }))
-	}
 }
 
 exports.deleteUser = (req, res, next) => {

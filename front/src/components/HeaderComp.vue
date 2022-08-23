@@ -14,14 +14,6 @@
   min-height: 60px;
 }
 
-/* .nav {
-  height: 60px;
-  align-items: center;
-}
-.nav-link {
-  color: #4e5166;
-} */
-
 .fa {
   font-size: 1.2em;
 }

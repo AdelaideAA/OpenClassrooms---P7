@@ -1,14 +1,12 @@
 <template>
 <!---- fil d'actualité ---->
   <main class="main">
-     <!-- <div class="img-cont">
-      <img alt="Logo Groupomania" src="../assets/icon-left-font.png" />
-    </div> -->
     <div class="row overflow-hidden flex-row-reverse conteiner-main">
       <div class="col-lg-3 mx-4 conteiner-profil">
         <ProfileComp />
       </div>
       <div class="col-lg-8">
+         <h1 class="first-post">{{firstPost}}</h1>
         <NewPostComp />
         <post-comp
           class="card"
@@ -30,6 +28,11 @@
 
   export default {
     name: 'Actu',
+    data() {
+      return {
+        firstPost:'',
+      } 
+    },
    
     components: {
       NewPostComp,
@@ -46,6 +49,9 @@
         })
         this.user = response.data 
         this.$store.commit("setPosts", response.data)
+         if(response.data.length === 0){
+          this.firstPost="Soyez le premier à partager quelque chose!"
+        }
       }
     },
   };
@@ -60,26 +66,13 @@
      max-width: 1300px;
     margin: auto;
   }
-/* .img-cont {
-  max-height: 250px;
-  width: 100%;
-  background-color: white;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-}
-.img-cont img {
-  object-fit: none;
-  padding-right: 20px;
-} */
+.first-post{
+    margin-top:25px;
+    margin-bottom: 25px;
+  }
+
 
 @media (max-width: 992px) {
-  /* .img-cont {
-    max-height: 150px;
-  }
-  .img-cont img{
-    object-fit: cover;
-  } */
   
   .conteiner-main{
     padding: 8px;
