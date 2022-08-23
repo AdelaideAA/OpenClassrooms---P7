@@ -44,7 +44,8 @@
             </div>
             <p class="err-msg">{{ errMsg }}</p>
             <button role="button" type="submit" class="btn-post">
-              <i class="fa-solid fa-check"></i> Publier
+              <fa icon="check" />
+               Publier
             </button>
             
           </div>

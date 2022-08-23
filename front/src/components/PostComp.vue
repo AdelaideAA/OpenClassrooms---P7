@@ -2,7 +2,7 @@
   <!---- Composition du post ---->
   <article class="post-card p-2 mb-4 shadow-sm">
     <div class="post-user">
-      <figure class="post-user-info" aria-describedby="informations de l'utilisateur qui à publié">
+      <figure class="post-user-info" aria-label="informations de l'utilisateur qui à publié">
         <div class="picture-user-container mx-auto mt-1 ms-4">
           <img
             class="picture-user-profile shadow"
@@ -28,15 +28,15 @@
         <!---- Button modal ---->
         <button
         role="button"
-        aria-describedby="Modifier ma publication"
+        aria-label="Modifier ma publication"
          v-if= "post.userId == user.userId || user.admin == true"
           type="button"
           class="btn btn-primary"
           @click="showModalPost = true"
         >
-          <i class="fa-solid fa-pencil" alt="image d'un crayon"></i>
-
+        <fa icon="pencil" alt="image d'un crayon"/>
         </button>
+
         <!---- Modal pour editer le post ---->
         <transition name="modalFade">
           <modal-update-post-comp
@@ -75,7 +75,7 @@
               </div>
               <div class="d-flex justify-content-between">
                 <button role="button" aria-label="Supprimer la publication" class="btn btn-danger" @click="deletePost">
-                  <i class="far fa-trash-alt delete me-2" alt="image d'une poubelle"></i> Supprimer ma
+                  <fa icon="trash-alt" class="me-2" alt="image d'une poubelle"/> Supprimer ma
                   publication
                 </button>
 
@@ -108,7 +108,7 @@
     <div class="like">
       <button type="button" role="button" aria-label="ajouter un like à ce post" class="btn like-btn" @click="likeIt()">
         <span aria-label="nombre de like" class="badge">{{ post.likes }}</span>
-        <i class="fa-solid fa-heart" alt="image de coeur"></i>
+        <fa icon="heart" alt="image de coeur"/>
       </button>
     </div>
     

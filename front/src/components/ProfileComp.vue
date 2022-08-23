@@ -17,13 +17,13 @@
     <!---- Button qui ouvre le modal pour update le profil ---->
     <button
       role="button"
-      aria-describedby="Modifier mon profil"
+      aria-label="Modifier mon profil"
       type="button"
       class="btn btn-primary my-2 px-5"
       @click="showModal = true"
     >
       Editer le profil
-      <i class="fa-solid fa-pen-to-square ms-4" alt="image d'un crayon"></i>
+      <fa icon="pen-to-square" class="ms-4" alt="image d'un crayon"/>
     </button>
 
     <!---- Modal d'édition---->
@@ -63,7 +63,7 @@
           <div class="d-flex justify-content-between">
             
             <button role="button" aria-label="Supprimer mon compte" class="btn btn-danger" @click.prevent="deleteAccount">
-              <i class="far fa-trash-alt delete me-2" alt="image d'une poubelle"></i> Supprimer mon compte
+              <fa icon="trash-alt" class="me-2" alt="image d'une poubelle"/> Supprimer mon compte
             </button>
 
             <button role="button" aria-label="Enregister les modifications"  @click="save" type="submit" class="btn btn-primary">
@@ -77,7 +77,7 @@
       </modal-comp>
     </transition>
     <button role="button" aria-label="Déconnexion du compte" class="btn btn-outline-secondary my-2" @click="handleClick">
-      Déconnexion <i class="fa-solid fa-right-from-bracket ms-4" alt="image d'une flèche de sortie"></i>
+      Déconnexion <fa icon="right-from-bracket" class="ms-4" alt="image d'une flèche de sortie"/>
     </button>
   </article>
   

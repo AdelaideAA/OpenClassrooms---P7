@@ -28,7 +28,9 @@
 }
 .img-cont img {
   object-fit: none;
+  width: 100%;
   padding-right: 20px;
+  max-height: inherit;
 }
 
 @media (max-width: 992px) {

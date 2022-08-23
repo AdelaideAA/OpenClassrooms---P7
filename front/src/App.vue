@@ -47,10 +47,6 @@
   color: var(--tertiary-color);
 }
 
-img {
-  width: 100%;
-}
-
 .card {
   border-color: transparent;
   border-radius: 8px;
