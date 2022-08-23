@@ -16,6 +16,7 @@
           type="text"
           class="form-control"
           placeholder="First Name"
+          aria-label="Prénom"
           v-model="user.firstName"
         />
       </div>
@@ -25,6 +26,7 @@
           type="text"
           class="form-control"
           placeholder="Last Name"
+          aria-label="Nom de famille"
           v-model="user.lastName"
         />
       </div>
@@ -34,6 +36,7 @@
           type="email"
           id="email"
           placeholder="email@email.fr"
+          aria-label="email"
           v-model="user.email"
           class="form-control"
         />
@@ -43,6 +46,7 @@
         <input
           type="password"
           id="password"
+          aria-label="mot de passe"
           placeholder="Mot de passe"
           v-model="user.password"
           class="form-control"
@@ -53,13 +57,14 @@
         <input
           type="password"
           id="confirm-password"
+          aria-label="confirmation du mot de passe"
           placeholder="Veuillez confirmer le mot de passe"
           v-model="user.passwordConfirm"
           class="form-control"
         />
       </div>
       <p>{{ errMsg }}</p>
-      <button class="btn-login" type="submit">S'inscrire</button>
+      <button role="button" class="btn-login" type="submit">S'inscrire</button>
     </form>
   </div>
   <div class="bloc-switch-connexion">

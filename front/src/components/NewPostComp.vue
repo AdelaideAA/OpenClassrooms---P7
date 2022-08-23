@@ -1,12 +1,13 @@
 <template>
 <!----Créer un nouveau post ---->
-  <div class="card post-card mb-4 shadow-sm">
+  <article class="card post-card mb-4 shadow-sm">
     <form
       action=""
       @submit.prevent="createPost"
       class="form-post p-2"
       name="myForm"
       id="myForm"
+      aria-label="Formulaire de création d'un post"
     >
       <div class="row">
         <div class="col-2">
@@ -23,6 +24,7 @@
               placeholder="Que voulez vous partager aujourd'hui?"
               class="form-control text-left"
               v-model="post"
+              aria-label="champs pour le message du post"
             ></textarea>
 
             <div class="mb-5">
@@ -35,13 +37,13 @@
                 accept="image/*"
                 class="form-control"
                 type="file"
-                aria-label="Upload"
+                aria-label="Chargez une image"
                 @change="uploadFile"
                 id="formFile"
               />
             </div>
             <p class="err-msg">{{ errMsg }}</p>
-            <button type="submit" class="btn-post">
+            <button role="button" type="submit" class="btn-post">
               <i class="fa-solid fa-check"></i> Publier
             </button>
             
@@ -49,7 +51,7 @@
         </div>
       </div>
     </form>
-  </div>
+  </article>
 </template>
 
 <script>

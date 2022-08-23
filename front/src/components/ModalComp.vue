@@ -5,7 +5,7 @@
       class="modal"
       tabindex="-1"
       role="dialog"
-      aria-labelledby="modalLabel"
+      aria-labelledby="Modifications des informations de l'utilisateur"
       aria-hidden="true"
     >
       <div class="modal-dialog" role="document">
@@ -26,6 +26,7 @@
           </div>
           <div class="modal-footer">
             <button
+            aria-label="Annuler les modififcations"
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"

@@ -7,7 +7,7 @@
     <form
       @submit.prevent="login"
       method="post"
-      aria-label="Formulaire d'inscription"
+      aria-label="Formulaire de connexion"
       class="form-login"
     >
       <div class="form-group">
@@ -15,6 +15,7 @@
         <input
           type="email"
           id="email"
+          aria-label="email"
           placeholder="email@email.fr"
           v-model="user.email"
           class="form-control"
@@ -25,12 +26,13 @@
         <input
           type="password"
           id="password"
+          aria-label="Mot de passe"
           placeholder="Mot de passe"
           v-model="user.password"
           class="form-control"
         />
       </div>
-      <button class="btn-login" type="submit">Se connecter</button>
+      <button role="button" class="btn-login" type="submit">Se connecter</button>
     </form>
     <p>{{ errMsg }}</p>
   </div>

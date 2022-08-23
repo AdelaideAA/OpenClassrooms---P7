@@ -1,27 +1,32 @@
 <template>
   <!---- Card profil ---->
-  <div class="card shadow-sm container">
+  <article class="card shadow-sm container">
     <avatar-compo></avatar-compo>
     <h2>Mon compte</h2>
     <span
-      ><strong>
+      ><h3 class="profil-username">
         {{ $store.state.user.firstName }}
-        {{ $store.state.user.lastName }}</strong
+        {{ $store.state.user.lastName }}</h3
       ></span
     >
+    
     <p v-if="$store.state.user.description">
       {{ $store.state.user.description }}
     </p>
-
+  
     <!---- Button qui ouvre le modal pour update le profil ---->
     <button
+      role="button"
+      aria-describedby="Modifier mon profil"
       type="button"
       class="btn btn-primary my-2 px-5"
       @click="showModal = true"
     >
       Editer le profil
-      <i class="fa-solid fa-pen-to-square ms-4"></i>
+      <i class="fa-solid fa-pen-to-square ms-4" alt="image d'un crayon"></i>
     </button>
+
+    <!---- Modal d'édition---->
     <transition name="modalFade">
       <modal-comp
         v-if="showModal"
@@ -29,10 +34,11 @@
         @fermeLModal="showModal = false"
       >
         <h2>Ajoutez une description et une photo de profil</h2>
-        <form @submit.prevent="save" style="text-align: left">
+        <form @submit.prevent="save" style="text-align: left" aria-label="modification des informations utilisateur">
           <div class="mb-3">
-            <div class="form-floating">
+            <div class="form-floating" aria-label="Modification de la description utilisateur">
               <textarea
+              aria-label="champs description utilisateur"
                 class="form-control text-left"
                 placeholder="description"
                 id="floatingTextarea"
@@ -41,39 +47,40 @@
               <label for="floatingTextarea">Description</label>
             </div>
           </div>
-          <div class="mb-5">
+          <div class="mb-5" aria-label="Modification image profil">
             <label for="formFile" class="form-label"
               >Change ta photo de profil ici</label
             >
             <input
               class="form-control"
               type="file"
-              aria-label="Upload"
+              aria-label="Chargez une image"
               @change="uploadProfilFile"
               id="formFile"
             />
           </div>
 
           <div class="d-flex justify-content-between">
-            <p>{{ errMsg }}</p>
-            <button class="btn btn-danger" @click.prevent="deleteAccount">
-              <i class="far fa-trash-alt delete me-2"></i> Supprimer mon compte
+            
+            <button role="button" aria-label="Supprimer mon compte" class="btn btn-danger" @click.prevent="deleteAccount">
+              <i class="far fa-trash-alt delete me-2" alt="image d'une poubelle"></i> Supprimer mon compte
             </button>
 
-            <button @click="save" type="submit" class="btn btn-primary">
+            <button role="button" aria-label="Enregister les modifications"  @click="save" type="submit" class="btn btn-primary">
               Submit
             </button>
           </div>
-
+          <p class="err-msg">{{ errMsg }}</p>
           
         </form>
         
       </modal-comp>
     </transition>
-    <button class="btn btn-outline-secondary my-2" @click="handleClick">
-      Déconnexion <i class="fa-solid fa-right-from-bracket ms-4"></i>
+    <button role="button" aria-label="Déconnexion du compte" class="btn btn-outline-secondary my-2" @click="handleClick">
+      Déconnexion <i class="fa-solid fa-right-from-bracket ms-4" alt="image d'une flèche de sortie"></i>
     </button>
-  </div>
+  </article>
+  
 </template>
 
 <script>
@@ -170,6 +177,11 @@ h2 {
   font-size: 1.2em;
   font-weight: 600;
 }
+.profil-username{
+  font-weight: 700;
+  font-size: medium;
+  margin-top: 8px;
+}
 
 .modalFade-enter-from {
   opacity: 0;
@@ -198,5 +210,10 @@ h2 {
   height: 78px;
   object-fit: cover;
 }
+.err-msg{
+    color: var(--primary-color);
+    font-weight: 400;
+    margin-top: 20px;
+  }
 
 </style>

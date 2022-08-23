@@ -1,8 +1,8 @@
 <template>
   <!---- Composition du post ---->
-  <div class="post-card p-2 mb-4 shadow-sm">
+  <article class="post-card p-2 mb-4 shadow-sm">
     <div class="post-user">
-      <div class="post-user-info">
+      <figure class="post-user-info" aria-describedby="informations de l'utilisateur qui à publié">
         <div class="picture-user-container mx-auto mt-1 ms-4">
           <img
             class="picture-user-profile shadow"
@@ -11,27 +11,30 @@
             alt="image de profil"
           />
           <img
-      v-else
-      src="../assets/avatar.png"
-      alt="image de profil par défaut"
-      class="picture-user-profile shadow"
-    />
-    </div>
+            v-else
+            src="../assets/avatar.png"
+            alt="image de profil par défaut"
+            class="picture-user-profile shadow"
+          />
 
-        <figcaption>
+        </div>
+
+        <figcaption aria-label="Nom de l'utilisateur et date de publication">
           {{ post.userName }} <br />
           <span class="date"> {{ timestamp }} </span>
         </figcaption>
-      </div>
+      </figure>
       <div class="modif">
         <!---- Button modal ---->
         <button
+        role="button"
+        aria-describedby="Modifier ma publication"
          v-if= "post.userId == user.userId || user.admin == true"
           type="button"
           class="btn btn-primary"
           @click="showModalPost = true"
         >
-          <i class="fa-solid fa-pencil"></i>
+          <i class="fa-solid fa-pencil" alt="image d'un crayon"></i>
 
         </button>
         <!---- Modal pour editer le post ---->
@@ -41,11 +44,12 @@
             title="Modifiez votre publication"
             @fermeLeModal="showModalPost = false"
           >
-            <h2>Modifier votre publication</h2>
-            <form @submit.prevent="UpdatePost" style="text-align: left">
+            <h2>Modifier votre message et/ou votre image</h2>
+            <form @submit.prevent="UpdatePost" style="text-align: left" aria-label="modification des champs du post">
               <div class="mb-3">
                 <div class="form-floating">
                   <textarea
+                  aria-label="champs de modification du message"
                     class="form-control text-left"
                     placeholder="ajoutez vos modifications"
                     id="floatingTextarea"
@@ -64,19 +68,20 @@
                   accept="image/*"
                   class="form-control"
                   type="file"
-                  aria-label="Upload"
+                  aria-label="changer l'image"
                   @change="uploadFile"
                   id="formFile"
                 />
               </div>
               <div class="d-flex justify-content-between">
-                <button class="btn btn-danger" @click="deletePost">
-                  <i class="far fa-trash-alt delete me-2"></i> Supprimer ma
+                <button role="button" aria-label="Supprimer la publication" class="btn btn-danger" @click="deletePost">
+                  <i class="far fa-trash-alt delete me-2" alt="image d'une poubelle"></i> Supprimer ma
                   publication
                 </button>
 
                 <button
-                
+                role="button"
+                aria-label="Enregistrer les modifications"
                   @click="UpdatePost"
                   type="submit"
                   class="btn btn-primary"
@@ -91,7 +96,7 @@
         </transition>
       </div>
     </div>
-
+    <!---- Fin modal - affichage des éléments sur le post -->
     <div class="post-content">
       <p>{{ post.post }}</p>
       <div class="post-content--img" v-if="post.imageUrl != null">
@@ -101,13 +106,14 @@
     <!---- Partie Like ---->
 
     <div class="like">
-      <button type="button" class="btn like-btn" @click="likeIt()">
-        <span class="badge">{{ post.likes }}</span>
-        <i class="fa-solid fa-heart"></i>
+      <button type="button" role="button" aria-label="ajouter un like à ce post" class="btn like-btn" @click="likeIt()">
+        <span aria-label="nombre de like" class="badge">{{ post.likes }}</span>
+        <i class="fa-solid fa-heart" alt="image de coeur"></i>
       </button>
     </div>
     
-  </div>
+  </article>
+  
 </template>
 
 <script>
@@ -160,25 +166,6 @@
           today.getFullYear()
         this.timestamp = date
       },
-      // /*Afficher l'ensemble des publications*/
-      // showAllPublications() {
-      //   const token = localStorage.getItem('token');
-
-      //   axios
-      //     .get('publication/', {
-      //       headers: {
-      //         'Content-type': 'application/json',
-      //         Authorization: `Bearer ${token}`,
-      //       },
-      //     })
-      //     .then((res) => {
-      //       this.publications.push(...res.data);
-      //       console.log("c'est res iciii", res)
-      //     })
-      //     .catch((error) => {
-      //       //console.log(error);
-      //     });
-      // },
 
       /*Choisir une nouvelle image*/
       uploadFile(event) {

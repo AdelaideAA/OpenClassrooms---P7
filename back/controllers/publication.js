@@ -6,8 +6,6 @@ const fs = require('fs');
 
 exports.createPost = (req, res, next) => {
   const postObject = req.body;
-  //const date = new Date();
-
   let imageUrl = null;
 
   if (req.file) {
@@ -124,7 +122,7 @@ exports.updatePost = (req, res, next) => {
 //       }
 //     });
 //   });
-// };
+// };  
 
 exports.deletePost = (req, res, next) => {
   User.findOne({ _id: req.auth.userId }).then((user) => {
@@ -254,96 +252,4 @@ exports.likePost = (req, res, next) => {
 // };
 //};
 
-// exports.likePost = (req, res, next) => {
-//   /*************************************************************************/
-//   Post.findOne({
-//     _id: req.params.id,
-//   })
-//     .then((post) => {
-//       switch (req.body.like) {
-//         //ajouter un like
-//         case 1:
-//           if (
-//             !post.usersLiked.includes(req.body.userId) &&
-//             req.body.like == 1
-//           ) {
-//             console.log('like trouvé');
-//             Like.updateOne(
-//               console.log('like peut update'),
-//               { _id: req.params.id },
-//               {
-//                 $inc: { likes: 1 },
-//                 $push: { usersLiked: req.body.userId },
-//                 _id: req.params.id,
-//               }
-//             )
-//               .then(() =>
-//                 res.status(201).json({ message: 'Like ajouté avec succès !' })
-//               )
-//               .catch((error) => {
-//                 res.status(400).json({ error: error });
-//               });
-//           }
-//           break;
-            //ajouter un dislike
-//         //       case -1:
-//         //       if (!post.usersDisliked.includes(req.body.userId) && req.body.like == 1)  {
-//         //         Post.updateOne(
-//         //           { _id: req.params.id },
-//         //           {
-//         //             $inc: { dislikes: 1 },
-//         //             $push: { usersDisliked: req.body.userId },
-//         //             _id: req.params.id,
-//         //           }
-//         //         )
-//         //           .then(() =>
-//         //             res.status(201).json({ message: 'Dislike ajouté avec succès !' })
-//         //           )
-//         //           .catch((error) => {
-//         //             res.status(400).json({ error: error });
-//         //           });
-//         //       }
-//         //       break;
-//         case 0:
-//          //like doit revenir à 0
-//           if (post.usersLiked.includes(req.body.userId)) {
-//             Post.updateOne(
-//               { _id: req.params.id },
-//               {
-//                 $inc: { likes: -1 },
-//                 $pull: { usersLiked: req.body.userId },
-//                 _id: req.params.id,
-//               }
-//             )
-//               .then(() =>
-//                 res.status(201).json({ message: 'Like retiré avec succès !' })
-//               )
-//               .catch((error) => {
-//                 res.status(400).json({ error: error });
-//               });
-//           }
-//           break;
-//         //dislike doit revenir à 0
-//         //           if(post.usersDisliked.includes(req.body.userId)){
-//         //             Post.updateOne(
-//         //               { _id: req.params.id },
-//         //               {
-//         //                 $inc: { dislikes: -1 },
-//         //                 $pull: { usersDisliked: req.body.userId },
-//         //                 _id: req.params.id,
-//         //               }
-//         //             )
-//         //               .then(() =>
-//         //                 res.status(201).json({ message: 'Dislike retiré avec succès !' })
-//         //               )
-//         //               .catch((error) => {
-//         //                 res.status(400).json({ error: error });
-//         //               });
-//         //             }
-//         //             break;
-//       }
-//     })
-//     .catch((error) => {
-//       res.status(404).json({ error });
-//     });
-// };
+

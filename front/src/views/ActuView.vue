@@ -2,10 +2,10 @@
 <!---- fil d'actualité ---->
   <main class="main">
     <div class="row overflow-hidden flex-row-reverse conteiner-main">
-      <div class="col-lg-3 mx-4 conteiner-profil">
+      <section class="col-lg-3 mx-4 conteiner-profil">
         <ProfileComp />
-      </div>
-      <div class="col-lg-8">
+      </section>
+      <section class="col-lg-8">
          <h1 class="first-post">{{firstPost}}</h1>
         <NewPostComp />
         <post-comp
@@ -15,7 +15,7 @@
           :post="post"
         >
         </post-comp>
-      </div>
+      </section>
     </div>
   </main>
 </template>
