@@ -7,9 +7,7 @@ export default createStore({
 		posts: [],
 	},
 	getters: {
-		// getPosts(state){
-		//   return state.posts
-		// }
+		
 	},
 	mutations: {
 		setUser(state, user) {
@@ -26,8 +24,6 @@ export default createStore({
 			state.user.picture = updatedUser.picture
 		},
 		updatePost(state, updatedPost) {
-			// state.posts.post = updatePost.post
-			// state.posts.imageUrl = updatePost.file
 			state.posts.forEach((post) => {
 				if (post._id === updatedPost._id) {
 					post.post = updatedPost.post

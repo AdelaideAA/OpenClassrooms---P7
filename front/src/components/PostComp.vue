@@ -144,9 +144,7 @@
     components: {
       ModalUpdatePostComp,
     },
-    // created() {
-    //   this.newPost.post = this.post.post
-    // },
+    
     data() {
       return {
         publications: [],
@@ -210,8 +208,7 @@
             },
           })
           .then((res) => {
-            console.log(res.data.upPost)
-            this.$store.commit('updatePost', res.data.upPost)
+            this.$store.commit('updatePost', res.data.post)
             this.showModalPost = false
           })
           .catch((error) => {
@@ -232,7 +229,6 @@
           .then((response) => {
             console.log('response du delete', response.data)
             if (response.data.delPost.acknowledged) {
-              // this.$store.commit('deletePost', response.data.post)
               this.$store.dispatch("getAllPosts")
             }
             this.showModalPost = false
@@ -262,7 +258,6 @@
 
           })
           .then((response) => {
-            console.log(response.data)
             this.$store.commit('updateLikes', response.data.updatedPost)
           })
           .catch((error) => console.log(error))

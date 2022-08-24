@@ -42,22 +42,6 @@
       ProfileComp,
     },
     async created() {
-      /*Afficher l'ensemble des post 
-         CODE ORIGINALE
-
-      if (this.$store.state.user) {
-        const response = await axios.get('publication', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        })
-        this.user = response.data
-        this.$store.commit("setPosts", response.data)
-        if (response.data.length === 0) {
-          this.firstPost = true
-        }
-      }
-      */
      if (this.$store.state.user) {
       this.$store.dispatch("getAllPosts")
       if (!this.$store.posts || this.$store.posts.length === 0) {

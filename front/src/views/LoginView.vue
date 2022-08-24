@@ -1,8 +1,5 @@
 <template>
   <!---- Se connecter ---->
-  <!-- <div class="img-cont">
-    <img alt="Groupomania" src="../assets/icon-left-font.png" />
-  </div> -->
   <div class="login">
     <form
       @submit.prevent="login"
@@ -61,9 +58,7 @@
     components: {},
     methods: {
       async login() {
-        // const user = {
-        //   ...this.user,
-        // };
+       
         await axios
           .post('auth/login', this.user)
           .then((response) => {

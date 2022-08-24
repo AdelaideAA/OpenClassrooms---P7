@@ -131,15 +131,15 @@
       /*choisir  une image de profil */
       uploadProfilFile(event) {
         this.user.picture = event.target.files[0]
-        console.log(this.user.picture)
-
       },
+
       /* Se déconnecter */
       handleClick() {
         localStorage.removeItem('token')
         this.$store.commit('setUser', null)
         this.$router.push('/')
       },
+      
       /* Supprimer son compte */
       deleteAccount() {
         const token = localStorage.getItem('token')
@@ -177,7 +177,6 @@
             },
           })
           .then((response) => {
-            console.log(response.data)
             this.$store.commit("updateUser", response.data)
             this.showModal = false
           })

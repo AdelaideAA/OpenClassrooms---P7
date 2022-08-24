@@ -1,10 +1,5 @@
 <template>
 <!---- Page de connexion ---->
-  <!-- <div class="bloc-color"></div> -->
-  <!-- <div class="img-cont">
-      <img alt="Logo Groupomania" src="../assets/icon-left-font.png" />
-    </div> -->
- 
   <main class="home">
     <h1><HelloWorld msg="Bienvenue sur votre nouveau réseau social d'entreprise!" /></h1>
     <div class="connexion">
