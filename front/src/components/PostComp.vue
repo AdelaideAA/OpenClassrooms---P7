@@ -2,7 +2,10 @@
   <!---- Composition du post ---->
   <article class="post-card p-2 mb-4 shadow-sm">
     <div class="post-user">
-      <figure class="post-user-info" aria-label="informations de l'utilisateur qui à publié">
+      <figure
+        class="post-user-info"
+        aria-label="informations de l'utilisateur qui à publié"
+      >
         <div class="picture-user-container mx-auto mt-1 ms-4">
           <img
             class="picture-user-profile shadow"
@@ -16,7 +19,6 @@
             alt="image de profil par défaut"
             class="picture-user-profile shadow"
           />
-
         </div>
 
         <figcaption aria-label="Nom de l'utilisateur et date de publication">
@@ -27,14 +29,14 @@
       <div class="modif">
         <!---- Button modal ---->
         <button
-        role="button"
-        aria-label="Modifier ma publication"
-         v-if= "post.userId == user.userId || user.admin == true"
+          role="button"
+          aria-label="Modifier ma publication"
+          v-if="post.userId == user.userId || user.admin == true"
           type="button"
           class="btn btn-primary"
           @click="showModalPost = true"
         >
-        <fa icon="pencil" alt="image d'un crayon"/>
+          <fa icon="pencil" alt="image d'un crayon" />
         </button>
 
         <!---- Modal pour editer le post ---->
@@ -45,11 +47,15 @@
             @fermeLeModal="showModalPost = false"
           >
             <h2>Modifier votre message et/ou votre image</h2>
-            <form @submit.prevent="UpdatePost" style="text-align: left" aria-label="modification des champs du post">
+            <form
+              @submit.prevent="UpdatePost"
+              style="text-align: left"
+              aria-label="modification des champs du post"
+            >
               <div class="mb-3">
                 <div class="form-floating">
                   <textarea
-                  aria-label="champs de modification du message"
+                    aria-label="champs de modification du message"
                     class="form-control text-left"
                     placeholder="ajoutez vos modifications"
                     id="floatingTextarea"
@@ -74,15 +80,24 @@
                 />
               </div>
               <div class="d-flex justify-content-between">
-                <button role="button" aria-label="Supprimer la publication" class="btn btn-danger" @click="deletePost">
-                  <fa icon="trash-alt" class="me-2" alt="image d'une poubelle"/> Supprimer ma
-                  publication
+                <button
+                  role="button"
+                  type="button"
+                  aria-label="Supprimer la publication"
+                  class="btn btn-danger"
+                  @click="deletePost"
+                >
+                  <fa
+                    icon="trash-alt"
+                    class="me-2"
+                    alt="image d'une poubelle"
+                  />
+                  Supprimer ma publication
                 </button>
 
                 <button
-                role="button"
-                aria-label="Enregistrer les modifications"
-                  @click="UpdatePost"
+                  role="button"
+                  aria-label="Enregistrer les modifications"
                   type="submit"
                   class="btn btn-primary"
                 >
@@ -106,14 +121,18 @@
     <!---- Partie Like ---->
 
     <div class="like">
-      <button type="button" role="button" aria-label="ajouter un like à ce post" class="btn like-btn" @click="likeIt()">
+      <button
+        type="button"
+        role="button"
+        aria-label="ajouter un like à ce post"
+        class="btn like-btn"
+        @click="likeIt()"
+      >
         <span aria-label="nombre de like" class="badge">{{ post.likes }}</span>
-        <fa icon="heart" alt="image de coeur"/>
+        <fa icon="heart" alt="image de coeur" />
       </button>
     </div>
-    
   </article>
-  
 </template>
 
 <script>
@@ -141,7 +160,7 @@
           userId: this.$store.state.user._id
         },
         timestamp: '',
-        errMsg:'',
+        errMsg: '',
       }
     },
     created() {
@@ -187,17 +206,17 @@
         axios
           .put(`publication/${id}`, formData, {
             headers: {
-              Authorization: 'Bearer ' + localStorage.getItem('token'),
+              Authorization: 'Bearer ' + token,
             },
           })
           .then((res) => {
-            console.log(res)
-            this.$store.commit('updatePost', res.data.post)
+            console.log(res.data.upPost)
+            this.$store.commit('updatePost', res.data.upPost)
             this.showModalPost = false
           })
           .catch((error) => {
-            console.log( error)
-            this.errMsg='Vous ne pouvez pas modifier votre publication pour le moment, veuillez réessayer plus tard.'
+            console.log(error)
+            this.errMsg = 'Vous ne pouvez pas modifier votre publication pour le moment, veuillez réessayer plus tard.'
           })
       },
       /* Supprimer le post */
@@ -212,13 +231,17 @@
           })
           .then((response) => {
             console.log('response du delete', response.data)
-            this.$store.commit('deletePost', response.data)
+            if (response.data.delPost.acknowledged) {
+              // this.$store.commit('deletePost', response.data.post)
+              this.$store.dispatch("getAllPosts")
+            }
             this.showModalPost = false
+
           })
-          .catch((error) =>{
+          .catch((error) => {
             console.log(error)
-            this.errMsg='Vous ne pouvez pas supprimer votre publication pour le moment, veuillez réessayer plus tard.'
-          } )
+            this.errMsg = 'Vous ne pouvez pas supprimer votre publication pour le moment, veuillez réessayer plus tard.'
+          })
       },
 
       /****************Like et dislikes*************** */
@@ -229,23 +252,23 @@
           postId: this.post._id,
           like: 1,
         }
-       
+
 
         axios
           .post(`publication/${this.post._id}/like/`, likeData, {
             headers: {
               Authorization: 'Bearer ' + localStorage.getItem('token'),
             },
-            
+
           })
           .then((response) => {
-            console.log('response', response.data.post)
+            console.log(response.data)
             this.$store.commit('updateLikes', response.data.updatedPost)
           })
-          .catch((error) => console.log( error))
+          .catch((error) => console.log(error))
       },
 
-      
+
     },
   };
 </script>
@@ -261,14 +284,13 @@
 .post-user-info {
   display: flex;
 }
- 
+
 .fa-heart {
   color: #dd0303;
   font-size: 1.7em;
   transition: all 600ms ease;
 }
- 
- 
+
 .post-content {
   margin: -10px 100px;
 }
@@ -283,7 +305,7 @@ figcaption {
   min-width: fit-content;
   margin: 5px;
 }
- 
+
 .profile-picture {
   border-radius: 50%;
   width: 80px;
@@ -310,11 +332,11 @@ figcaption {
 .modalFade-leave-from {
   opacity: 1;
 }
- 
+
 .modalFade-leave-to {
   opacity: 0;
 }
- 
+
 .picture-user-container {
   width: 78px;
 }
@@ -322,10 +344,10 @@ figcaption {
   border-radius: 50%;
   padding: 0;
   height: 78px;
-    width: 78px;
+  width: 78px;
   object-fit: cover;
 }
- 
+
 .badge {
   color: var(--tertiary-color);
 }
@@ -344,20 +366,19 @@ figcaption {
   background-color: white;
   border-color: white;
 }
- 
+
 .like .like-btn:hover .fa-heart {
   transform: scale(1.2);
 }
-.fa-pencil{
+.fa-pencil {
   font-size: 1.2em;
 }
-  @media (max-width: 768px) {
-    .picture-user-container {
-      width: 65px!important;
-    }
-    .picture-user-profile {
-      height: 70px;
-    }
+@media (max-width: 768px) {
+  .picture-user-container {
+    width: 65px !important;
   }
-
+  .picture-user-profile {
+    height: 70px;
+  }
+}
 </style>

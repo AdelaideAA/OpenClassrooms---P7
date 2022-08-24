@@ -23,8 +23,6 @@ router.post('/:id/like', auth, publicationCtrl.likePost);
 // commenter un post
 //router.post('/:id/comment', auth, multer, publicationCtrl.commentPost);
 
-//répondre ou liker un commentaire - logique a revoir
-//router.post("/:id/:commentId/react", auth, publicationCtrl.reactToComment);
-//router.post("/:id/:commentId/react", auth, publicationCtrl.likeToComment);
+
 
 module.exports = router;

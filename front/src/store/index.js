@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+  import axios from 'axios'
 
 export default createStore({
 	state: {
@@ -45,12 +46,21 @@ export default createStore({
 			})
 		},
 		deletePost(state, post) {
-			var index = state.posts.findIndex(p => p.id == post._id);
-			state.posts.splice(index, 1);
- 
-		}
+			console.log('runnning deletePost', post, state.posts)
+			var index = state.posts.findIndex((p) => p.id == post._id)
+			state.posts.splice(index, 1)
+		},
 	},
 
-	actions: {},
+	actions: {
+		async getAllPosts(context) {
+			const response = await axios.get('publication', {
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem('token')}`,
+				},
+			})
+			context.commit('setPosts', response.data)
+		},
+	},
 	modules: {},
 })

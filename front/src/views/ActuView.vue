@@ -6,8 +6,10 @@
         <ProfileComp />
       </section>
       <section class="col-lg-8">
-         <h1 class="first-post">{{firstPost}}</h1>
-        <NewPostComp @postCree="this.firstPost= false" />
+         <h1 v-if="firstPost" class="first-post">
+          Soyez le premier à partager quelque chose!
+        </h1>
+        <NewPostComp @postCree="this.firstPost = false" />
         <post-comp
           class="card"
           v-for="post in $store.state.posts"
@@ -40,21 +42,28 @@
       ProfileComp,
     },
     async created() {
-      /*Afficher l'ensemble des post */
+      /*Afficher l'ensemble des post 
+         CODE ORIGINALE
+
       if (this.$store.state.user) {
         const response = await axios.get('publication', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         })
-        this.user = response.data 
+        this.user = response.data
         this.$store.commit("setPosts", response.data)
-         if(response.data.length === 0){
-          this.firstPost=true
-        }else{
-          this.firstPost=false
+        if (response.data.length === 0) {
+          this.firstPost = true
         }
       }
+      */
+     if (this.$store.state.user) {
+      this.$store.dispatch("getAllPosts")
+      if (!this.$store.posts || this.$store.posts.length === 0) {
+          this.firstPost = true
+        }
+     }
     },
   };
 </script>

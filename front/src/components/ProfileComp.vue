@@ -6,14 +6,14 @@
     <span
       ><h3 class="profil-username">
         {{ $store.state.user.firstName }}
-        {{ $store.state.user.lastName }}</h3
-      ></span
+        {{ $store.state.user.lastName }}
+      </h3></span
     >
-    
+
     <p v-if="$store.state.user.description">
       {{ $store.state.user.description }}
     </p>
-  
+
     <!---- Button qui ouvre le modal pour update le profil ---->
     <button
       role="button"
@@ -23,7 +23,7 @@
       @click="showModal = true"
     >
       Editer le profil
-      <fa icon="pen-to-square" class="ms-4" alt="image d'un crayon"/>
+      <fa icon="pen-to-square" class="ms-4" alt="image d'un crayon" />
     </button>
 
     <!---- Modal d'édition---->
@@ -34,11 +34,18 @@
         @fermeLModal="showModal = false"
       >
         <h2>Ajoutez une description et une photo de profil</h2>
-        <form @submit.prevent="save" style="text-align: left" aria-label="modification des informations utilisateur">
+        <form
+          @submit.prevent="save"
+          style="text-align: left"
+          aria-label="modification des informations utilisateur"
+        >
           <div class="mb-3">
-            <div class="form-floating" aria-label="Modification de la description utilisateur">
+            <div
+              class="form-floating"
+              aria-label="Modification de la description utilisateur"
+            >
               <textarea
-              aria-label="champs description utilisateur"
+                aria-label="champs description utilisateur"
                 class="form-control text-left"
                 placeholder="description"
                 id="floatingTextarea"
@@ -61,26 +68,43 @@
           </div>
 
           <div class="d-flex justify-content-between">
-            
-            <button role="button" aria-label="Supprimer mon compte" class="btn btn-danger" @click.prevent="deleteAccount">
-              <fa icon="trash-alt" class="me-2" alt="image d'une poubelle"/> Supprimer mon compte
+            <button
+              role="button"
+              aria-label="Supprimer mon compte"
+              class="btn btn-danger"
+              @click.prevent="deleteAccount"
+            >
+              <fa icon="trash-alt" class="me-2" alt="image d'une poubelle" />
+              Supprimer mon compte
             </button>
 
-            <button role="button" aria-label="Enregister les modifications"  @click="save" type="submit" class="btn btn-primary">
+            <button
+              role="button"
+              aria-label="Enregister les modifications"
+              type="submit"
+              class="btn btn-primary"
+            >
               Submit
             </button>
           </div>
           <p class="err-msg">{{ errMsg }}</p>
-          
         </form>
-        
       </modal-comp>
     </transition>
-    <button role="button" aria-label="Déconnexion du compte" class="btn btn-outline-secondary my-2" @click="handleClick">
-      Déconnexion <fa icon="right-from-bracket" class="ms-4" alt="image d'une flèche de sortie"/>
+    <button
+      role="button"
+      aria-label="Déconnexion du compte"
+      class="btn btn-outline-secondary my-2"
+      @click="handleClick"
+    >
+      Déconnexion
+      <fa
+        icon="right-from-bracket"
+        class="ms-4"
+        alt="image d'une flèche de sortie"
+      />
     </button>
   </article>
-  
 </template>
 
 <script>
@@ -97,7 +121,7 @@
           description: ''
         },
         showModal: false,
-         errMsg: '',
+        errMsg: '',
       }
     },
     created() {
@@ -130,15 +154,15 @@
             })
             .then(localStorage.clear()) // <- on vide le localStorage(userId et token)
           this.$router.push({ path: '/' })
-          .catch((error) => {
-            error
-          })
+            .catch((error) => {
+              error
+            })
         }
       },
       /*Mettre à jour son profil */
       save() {
         let formData = new FormData()
-        formData.append('file', this.user.picture)  
+        formData.append('file', this.user.picture)
         formData.append('description', this.user.description)
 
 
@@ -158,7 +182,7 @@
             this.showModal = false
           })
           .catch((error) => {
-            console.log(error);
+            console.log(error)
             this.errMsg = error.response.data.message
               ? error.response.data.message
               : error
@@ -177,7 +201,7 @@ h2 {
   font-size: 1.2em;
   font-weight: 600;
 }
-.profil-username{
+.profil-username {
   font-weight: 700;
   font-size: medium;
   margin-top: 8px;
@@ -208,13 +232,11 @@ h2 {
   border-radius: 50%;
   padding: 0;
   height: 78px;
-  width: 78px;
   object-fit: cover;
 }
-.err-msg{
-    color: var(--primary-color);
-    font-weight: 400;
-    margin-top: 20px;
-  }
-
+.err-msg {
+  color: var(--primary-color);
+  font-weight: 400;
+  margin-top: 20px;
+}
 </style>

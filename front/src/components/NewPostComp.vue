@@ -108,8 +108,10 @@
             if (response.status === 201) {
               this.$store.commit('ajouterPost', response.data.post);
               this.post = '';
+              this.file = '';
               this.fileInputKey++;
               this.$emit("postCree", true)
+              
             }
           })
           .catch((error) => {
