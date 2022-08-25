@@ -44,7 +44,7 @@
     async created() {
      if (this.$store.state.user) {
       this.$store.dispatch("getAllPosts")
-      if (!this.$store.posts || this.$store.posts.length === 0) {
+      if (!this.$store.state.posts || this.$store.state.posts.length === 0) {
           this.firstPost = true
         }
      }
