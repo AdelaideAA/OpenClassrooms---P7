@@ -229,6 +229,7 @@
           .then((response) => {
             console.log('response du delete', response.data)
             if (response.data.delPost.acknowledged) {
+              //appel la fonction pour remettre l'ensemble des post
               this.$store.dispatch("getAllPosts")
             }
             this.showModalPost = false

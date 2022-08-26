@@ -27,6 +27,7 @@
           .then((res) => {
             console.log(res.data)
             this.$store.commit('setUser', res.data)
+            this.$router.push('/actu')
           })
       } else if (!token) {
         this.$router.push('/login')

@@ -47,6 +47,8 @@
       if (!this.$store.state.posts || this.$store.state.posts.length === 0) {
           this.firstPost = true
         }
+     } else{
+      this.$router.push("/login")
      }
     },
   };

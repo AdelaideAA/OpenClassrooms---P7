@@ -50,12 +50,17 @@ export default createStore({
 
 	actions: {
 		async getAllPosts(context) {
-			const response = await axios.get('publication', {
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem('token')}`,
-				},
-			})
-			context.commit('setPosts', response.data)
+			try {
+				const response = await axios.get('publication', {
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('token')}`,
+					},
+				})
+				context.commit('setPosts', response.data)
+			} catch  (err) {
+				console.log(err)
+			}
+			
 		},
 	},
 	modules: {},
