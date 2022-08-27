@@ -7,7 +7,7 @@
       </section>
       <section class="col-lg-8">
          <h1 v-if="firstPost" class="first-post">
-          Soyez le premier à partager quelque chose!
+          Partager quelque chose!
         </h1>
         <NewPostComp @postCree="this.firstPost = false" />
         <post-comp

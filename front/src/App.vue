@@ -30,7 +30,7 @@
             this.$router.push('/actu')
           })
       } else if (!token) {
-        this.$router.push('/login')
+        this.$router.push('/')
       }
     },
   };
